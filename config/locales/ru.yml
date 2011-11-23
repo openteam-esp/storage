@@ -1,0 +1,30 @@
+ru:
+  activerecord:
+    models:
+      root_entry:       Корневая директория
+      directory_entry:  Директория
+      file_entry:       Файл
+
+    attributes:
+      entry:
+        name:           Название
+        full_path:      Полный путь
+        parent:         Родительская директория
+
+      file_entry:
+        size:           Размер
+
+    errors:
+      models:
+        entry:
+          attributes:
+            parent:
+              must_be_a_directory: Должна быть директорией
+        root_entry:
+          attributes:
+            parent:
+              must_be_nil: Должна быть пустой
+
+  time:
+    formats:
+      default: "%Y.%m.%d %H:%M"
