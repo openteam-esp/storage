@@ -18,6 +18,7 @@ end
 
 group :production do
   gem 'fog',                          :require => false
+  gem 'pg',                           :require => false
 end
 
 group :assets do
