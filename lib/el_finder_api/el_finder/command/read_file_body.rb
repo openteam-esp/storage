@@ -10,7 +10,7 @@ module ElFinder
 
     class Result < Command::Result
       def content
-        arguments.entry.entry.file.data
+        arguments.entry.entry.file.data.force_encoding('utf-8')
       end
     end
   end
