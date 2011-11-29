@@ -25,7 +25,7 @@ module ElFinder
       end
 
       def options
-        {path: arguments.entry.full_path, url: arguments.entry.url, disabled: [], separator: '/', copyOverwrite: 1, archivers: {create: [], extract: []}}
+        {path: arguments.entry.full_path, disabled: [], separator: '/', copyOverwrite: 1, archivers: {create: [], extract: []}}
       end
     end
 

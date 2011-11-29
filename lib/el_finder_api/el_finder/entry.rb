@@ -53,11 +53,6 @@ class ElFinder::Entry < ElFinder::Model
     "#{root.volumeid}#{Base64.urlsafe_encode64(relative_path).strip.tr('=', '')}"
   end
 
-  def url
-    'http://'
-    #::Rails.application.routes.url_helpers.entry_url(self, ::Rails.application.config.action_mailer[:default_url_options])
-  end
-
   def date
     I18n.l(entry.updated_at)
   end
@@ -83,7 +78,7 @@ class ElFinder::Entry < ElFinder::Model
   end
 
   def attributes
-    %w[name mime hash url date size phash read write locked]
+    %w[name mime hash date size phash read write locked]
   end
 
   def relative_path

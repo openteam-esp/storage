@@ -24,6 +24,6 @@ class ElFinder::Root < ElFinder::Directory
   end
 
   def attributes
-    %w[name mime hash url date size phash read write locked]
+    %w[name mime hash date size phash read write locked]
   end
 end
