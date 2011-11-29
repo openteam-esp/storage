@@ -10,5 +10,5 @@ Settings.define 's3.bucket_name',             :env_var => 'S3_BUCKET_NAME'
 Settings.define 'hoptoad.api_key',            :env_var => 'HOPTOAD_API_KEY'
 Settings.define 'hoptoad.host',               :env_var => 'HOPTOAD_HOST'
 
-Settings.define 'system.address',             :env_var => 'SYSTEM_ADDRESS',       :require => true
+Settings.define 'host',                       :env_var => 'HOST',                   :require => true
 Settings.resolve!
