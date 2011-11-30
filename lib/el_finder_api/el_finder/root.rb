@@ -5,10 +5,10 @@ class ElFinder::Root < ElFinder::Directory
   end
 
   def find_el_entry_by_hash(hash)
-    root_hash, entry_hash = hash.split('_')
+    root_hash, *entry_hash = hash.split('_')
     # root_id = root_hash.scan(/^r(\d+)$/).first
     # TODO: validate root_id == self.id
-    el_entry_for_path(decode_path(entry_hash))
+    el_entry_for_path(decode_path(entry_hash.join('_')))
   end
 
   def el_entry_for_path(path)
