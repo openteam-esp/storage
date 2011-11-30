@@ -12,6 +12,10 @@ class FileEntry < Entry
     true
   end
 
+  def children
+    DirectoryEntry.find(self)
+  end
+
   protected
 
     def name_of_copy(number)

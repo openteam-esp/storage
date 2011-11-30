@@ -16,7 +16,7 @@ module ElFinder
 
     protected
       def execute_command
-        arguments.upload.map{|file| ElFinder::File.new(:entry => FileEntry.create!(:parent => arguments.entry.entry, :file => file), :root => arguments.entry.root)}
+        arguments.upload.map{|file| el_root.el_entry(FileEntry.create!(:parent => arguments.entry.entry, :file => file))}
       end
   end
 end

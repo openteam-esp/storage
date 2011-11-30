@@ -3,16 +3,7 @@ class Entry < ActiveRecord::Base
 
   scope :directories, where(:type => 'DirectoryEntry')
 
-
   validate :valdate_parent
-
-  def directories
-    DirectoryEntry.where :ancestry => child_ancestry
-  end
-
-  def files
-    FileEntry.where :ancestry => child_ancestry
-  end
 
   def duplicate
     Entry.transaction do

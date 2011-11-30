@@ -7,9 +7,6 @@ class ElFinder::Connector
   def command_for(params)
     params = params.dup
     command_name = params.delete(:cmd)
-    params.delete(:format)
-    params.delete(:controller)
-    params.delete(:action)
     command_class_for(command_name).new(params)
   end
 

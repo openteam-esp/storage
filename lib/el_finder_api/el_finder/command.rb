@@ -20,7 +20,7 @@ module ElFinder
 
   class Command < Model
 
-    attr_accessor :arguments, :error, :result
+    attr_accessor :arguments, :error, :result, :root_path
 
     class Arguments < Model
       attr_accessor :command
@@ -29,13 +29,14 @@ module ElFinder
       def entry
         el_entry(target)
       end
+
       def entries
         targets.map{|target| el_entry(target)}
       end
     end
 
     class Result < Model
-      attr_accessor :arguments, :execute_command
+      attr_accessor :arguments, :execute_command, :command
     end
 
     class_attribute :command_name
@@ -45,21 +46,43 @@ module ElFinder
     end
 
     def initialize(init_params)
+      self.root_path = init_params.delete(:root_path)
       self.arguments = "#{self.class.name}::Arguments".constantize.new(init_params.merge(:command => self))
     end
 
     def run
-      self.result = "#{self.class.name}::Result".constantize.new(:arguments => arguments, :execute_command => execute_command)
+      self.result = "#{self.class.name}::Result".constantize.new(:arguments => arguments, :execute_command => execute_command, :command => self)
     end
 
     def headers
       @headers ||= {}
     end
 
+    def el_root
+      @el_root ||= ElFinder::Root.for_path(root_path)
+    end
+
+    def json
+      result.el_hash.inject({}) do | result, values |
+        key, value = values
+      result[key] = transform(value)
+      result
+      end
+    end
+
     protected
 
+      def transform(value)
+        case value
+        when RootEntry, DirectoryEntry, FileEntry then el_root.el_entry(value).el_hash
+        when Array then value.map{|v| transform(v) }
+        when Hash then value.inject({}) { |h, v| h[v[0]] = transform(v[1]); h }
+        else value
+        end
+      end
+
       def el_entry(hash)
-        ElFinder::Entry.find_by_hash hash
+        el_root.find_el_entry_by_hash hash
       end
 
       def execute_command

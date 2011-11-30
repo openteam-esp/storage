@@ -11,7 +11,7 @@ module ElFinder
 
       def initialize(params)
         super(params)
-        self.target ||= ElFinder::Root.new(:entry => RootEntry.instance).hash if init
+        self.target ||= command.el_root.hash if init
       end
     end
 
@@ -25,7 +25,7 @@ module ElFinder
       end
 
       def options
-        {path: arguments.entry.full_path, disabled: [], separator: '/', copyOverwrite: 1, archivers: {create: [], extract: []}}
+        {disabled: [], separator: '/', copyOverwrite: 1, archivers: {create: [], extract: []}}
       end
     end
 
