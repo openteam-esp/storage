@@ -16,11 +16,14 @@ ActiveRecord::Schema.define(:version => 20111111111111) do
   create_table "entries", :force => true do |t|
     t.string   "type"
     t.string   "name"
-    t.string   "mime"
-    t.integer  "size"
-    t.string   "uid"
     t.string   "ancestry"
     t.integer  "ancestry_depth"
+    t.string   "file_uid"
+    t.integer  "file_size"
+    t.integer  "file_width"
+    t.integer  "file_height"
+    t.string   "file_mime_type"
+    t.string   "file_mime_directory"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
