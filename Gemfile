@@ -19,12 +19,13 @@ end
 group :production do
   gem 'fog',                          :require => false
   gem 'pg',                           :require => false
+  gem 'unicorn',                      :require => false                   unless ENV['SHARED_DATABASE_URL']
 end
 
 group :assets do
   gem 'coffee-rails', '~> 3.1.1'
   gem 'sass-rails',   '~> 3.1.5'
-  gem 'therubyracer'
+  gem 'therubyracer'                                                      unless RUBY_PLATFORM =~ /freebsd/
   gem 'uglifier',     '~> 1.0.3'
 end
 
