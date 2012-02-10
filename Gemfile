@@ -1,32 +1,33 @@
 source :rubygems
 
 group :test do
-  gem 'fabrication',                  :require => false
-  gem 'guard-rspec',                  :require => false
-  gem 'guard-spork',                  :require => false
+  gem 'fabrication',                    :require => false
+  gem 'guard-rspec',                    :require => false
+  gem 'guard-spork',                    :require => false
   gem 'libnotify'
   gem 'rb-inotify'
-  gem 'rspec-rails',  '~> 2.6.0',     :require => false
-  gem 'spork',        '~> 0.9.0rc9',  :require => false
-  gem 'sqlite3',                      :require => false
-  gem 'shoulda-matchers',             :require => false
+  gem 'rspec-rails',                    :require => false
+  gem 'spork',                          :require => false
+  gem 'sqlite3',                        :require => false
+  gem 'shoulda-matchers',               :require => false
 end
 
 group :development do
   gem 'rails-dev-boost'
+  gem 'annotate',     '>= 2.4.1.beta1', :require => false
 end
 
 group :production do
-  gem 'fog',                          :require => false
-  gem 'pg',                           :require => false
-  gem 'unicorn',                      :require => false                   unless ENV['SHARED_DATABASE_URL']
+  gem 'fog',                            :require => false
+  gem 'pg',                             :require => false
+  gem 'unicorn',                        :require => false                   unless ENV['SHARED_DATABASE_URL']
 end
 
 group :assets do
-  gem 'coffee-rails', '~> 3.1.1'
-  gem 'sass-rails',   '~> 3.1.5'
-  gem 'therubyracer'                                                      unless RUBY_PLATFORM =~ /freebsd/
-  gem 'uglifier',     '~> 1.0.3'
+  gem 'coffee-rails'
+  gem 'sass-rails'
+  gem 'therubyracer'                                                        unless RUBY_PLATFORM =~ /freebsd/
+  gem 'uglifier'
 end
 
 gem 'acts_as_singleton'
@@ -35,5 +36,5 @@ gem 'configliere'
 gem 'default_value_for'
 gem 'dragonfly'
 gem 'jquery-rails'
-gem 'rails',                          :require => false
+gem 'rails',                            :require => false
 gem 'russian'
