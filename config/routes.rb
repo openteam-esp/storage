@@ -1,4 +1,4 @@
-Pool::Application.routes.draw do
+Storage::Application.routes.draw do
   match 'api/el_finder/v2' => 'el_finder/commands#create'
   match 'api/el_finder/v2/*root_path' => 'el_finder/commands#create'
 

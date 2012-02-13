@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Pool::Application.load_tasks
+Storage::Application.load_tasks
