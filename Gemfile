@@ -18,9 +18,7 @@ group :development do
 end
 
 group :production do
-  gem 'fog',                            :require => false
-  gem 'pg',                             :require => false
-  gem 'unicorn',                        :require => false                   unless ENV['SHARED_DATABASE_URL']
+  gem 'fog',                            :require => false                   if ENV['HEROKU']
 end
 
 group :assets do
@@ -32,9 +30,7 @@ end
 
 gem 'acts_as_singleton'
 gem 'ancestry'
-gem 'configliere'
-gem 'default_value_for'
 gem 'dragonfly'
+gem 'esp-commons'
 gem 'jquery-rails'
 gem 'rails',                            :require => false
-gem 'russian'
