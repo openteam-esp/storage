@@ -18,7 +18,7 @@ group :development do
 end
 
 group :production do
-  gem 'fog',                            :require => false                   if ENV['HEROKU']
+  gem 'fog',                            :require => false
 end
 
 group :assets do
