@@ -28,8 +28,6 @@ GEM
     activesupport (3.2.1)
       i18n (~> 0.6)
       multi_json (~> 1.0)
-    acts_as_singleton (0.0.5)
-      activerecord
     airbrake (3.0.9)
       activesupport
       builder
@@ -60,7 +58,7 @@ GEM
       rack
     erubis (2.7.0)
     escape (0.0.4)
-    esp-commons (0.0.4)
+    esp-commons (0.0.5)
       airbrake
       ancestry
       annotate (>= 2.4.1.beta1)
@@ -226,7 +224,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  acts_as_singleton
   ancestry
   annotate (>= 2.4.1.beta1)
   coffee-rails

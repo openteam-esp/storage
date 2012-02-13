@@ -28,7 +28,6 @@ group :assets do
   gem 'uglifier'
 end
 
-gem 'acts_as_singleton'
 gem 'ancestry'
 gem 'dragonfly'
 gem 'esp-commons'

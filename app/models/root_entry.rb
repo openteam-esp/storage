@@ -1,5 +1,8 @@
 class RootEntry < DirectoryEntry
-  acts_as_singleton
+
+  def self.instance
+    RootEntry.first || RootEntry.create!
+  end
 
   def full_path
     ""
