@@ -28,7 +28,7 @@ class ElFinder::File < ElFinder::Entry
 
   protected
     def url_for(helper, options={})
-      Rails.application.routes.url_helpers.send("#{helper}s_url", options.merge(id: entry.id, name: name, host: Settings['app.url']))
+      Settings['app.url'] + Rails.application.routes.url_helpers.send("#{helper}s_path", options.merge(id: entry.id, name: name))
     end
 
 end
