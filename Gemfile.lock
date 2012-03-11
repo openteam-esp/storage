@@ -109,6 +109,7 @@ GEM
       net-ssh (>= 1.99.1)
     net-ssh (2.3.0)
     nokogiri (1.5.2)
+    pg (0.13.2)
     polyglot (0.3.3)
     rack (1.4.1)
     rack-cache (1.2)
@@ -197,6 +198,7 @@ DEPENDENCIES
   guard-spork
   jquery-rails
   libnotify
+  pg
   rails
   rb-inotify
   rspec-rails
