@@ -22,6 +22,7 @@ end
 
 group :production do
   gem 'fog',                            :require => false                   unless RUBY_PLATFORM =~ /freebsd/
+  gem 'pg',                             :require => false
 end
 
 group :test do
