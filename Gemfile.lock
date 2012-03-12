@@ -52,7 +52,7 @@ GEM
     dragonfly (0.9.10)
       rack
     erubis (2.7.0)
-    esp-commons (0.1.9)
+    esp-commons (0.2.0)
       active_attr
       airbrake
       configliere
