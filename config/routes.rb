@@ -2,12 +2,12 @@ Storage::Application.routes.draw do
   match 'api/el_finder/v2' => 'el_finder/commands#create'
   match 'api/el_finder/v2/*root_path' => 'el_finder/commands#create'
 
-  get '/files/:id/crop/:width-:height-/*name' => Dragonfly[:files].endpoint { |params, app|
+  get '/files/:id/:width-:height!/*name' => Dragonfly[:files].endpoint { |params, app|
     image = FileEntry.where(:file_mime_directory => 'image').find(params[:id])
     width = [params[:width].to_i, image.file_width].min
     height = [params[:height].to_i, image.file_height].min
     image.file.thumb("#{width}x#{height}#")
-  }, :as => :cropped_images, :format => false
+  }, :as => :resized_images, :format => false
 
   get '/files/:id/:width-:height/*name' => Dragonfly[:files].endpoint { |params, app|
     image = FileEntry.where(:file_mime_directory => 'image').find(params[:id])
