@@ -1,11 +1,8 @@
-host:                   'localhost:3000'
+app:
+  secret:       SECRET
+  url:          http://storage.openteam.ru
 
-production:
-  s3:
-    access_key_id:      key_id
-    secret_access_key:  secret_access_key
-
-  hoptoad:
-    key:                key
-    host:               host
+errors:
+  key:          KEY
+  url:          http://errors.openteam.ru
 
