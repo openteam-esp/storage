@@ -22,7 +22,7 @@ class FileEntry < Entry
   end
 
   def image?
-    mime_directory == 'image' && file_width? && file_height?
+    file_mime_directory == 'image' && file_width? && file_height?
   end
 
   protected
