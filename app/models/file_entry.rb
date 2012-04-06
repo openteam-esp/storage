@@ -15,10 +15,14 @@ class FileEntry < Entry
     DirectoryEntry.find(self)
   end
 
-  %w[audio video image].each do | mime_directory |
+  %w[audio video].each do | mime_directory |
     define_method "#{mime_directory}?" do
       mime_directory == file_mime_directory
     end
+  end
+
+  def image?
+    mime_directory == 'image' && file_width? && file_height?
   end
 
   protected
