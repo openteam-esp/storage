@@ -11,7 +11,7 @@ module ElFinder
 
     class Result < Command::Result
       def tree
-        arguments.entry.entry.subtree(:to_depth => 2).directories
+        arguments.entry.entry.subtree(:to_depth => 1).directories
       end
     end
 

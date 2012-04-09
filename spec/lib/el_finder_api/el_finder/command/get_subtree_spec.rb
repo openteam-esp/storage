@@ -24,11 +24,11 @@ module ElFinder
 
           context 'with directories at 2 level' do
             before { create_another_directory(:parent => directory) }
-            it { should == [root, directory, another_directory] }
+            it { should == [root, directory] }
 
             context 'with directories at 3 level' do
               before { Fabricate :directory_entry, :parent => another_directory }
-              it { should == [root, directory, another_directory] }
+              it { should == [root, directory] }
             end
           end
         end
@@ -46,8 +46,8 @@ module ElFinder
             it { should == [directory, another_directory] }
 
             context 'with directories at 3 level' do
-              before { @yet_another_directory = Fabricate :directory_entry, :parent => another_directory }
-              it { should == [directory, another_directory, @yet_another_directory] }
+              before { Fabricate :directory_entry, :parent => another_directory }
+              it { should == [directory, another_directory] }
             end
           end
         end
