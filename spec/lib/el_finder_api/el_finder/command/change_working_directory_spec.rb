@@ -33,7 +33,6 @@ module ElFinder
             subject             { options }
 
             its(:path)          { should == el_root.name }
-            its(:url)           { should =~ /^http:/ }
             its(:disabled)      { should == [] }
             its(:separator)     { should == '/' }
             its(:copyOverwrite) { should == 1 }
@@ -65,7 +64,6 @@ module ElFinder
             subject { options }
 
             its(:path)          { should == 'Root/directory' }
-            its(:url)           { should =~ /^http:/ }
             its(:disabled)      { should == [] }
             its(:separator)     { should == '/' }
             its(:copyOverwrite) { should == 1 }
@@ -74,15 +72,17 @@ module ElFinder
         end
 
 
+        context '(init: true, target: subdirectory, tree: true)' do
 
-        context '(init: true, target: directory, tree: true)' do
-          let(:params)        { {init: true, target: el_directory.hash, tree: true} }
+          let(:subdirectory)  { make_el_directory(:entry => Fabricate(:directory_entry, :parent => directory)) }
+          let(:params)        { {init: true, target: subdirectory.hash, tree: true} }
 
           before              { create_file(:parent => root) }
+          before              { @file_in_dir = Fabricate :file_entry, :parent => subdirectory.entry }
 
           its(:api)           { should == 2 }
-          its(:cwd)           { should == el_directory.entry }
-          its(:files)         { should == [root, directory] }
+          its(:cwd)           { should == subdirectory.entry }
+          its(:files)         { should == [@file_in_dir, root, directory] }
         end
 
     end

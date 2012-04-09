@@ -21,11 +21,17 @@ module ElFinder
       def uplMaxSize; '16m'                 end
 
       def files
-        arguments.entry.entry.children.all
+        files = arguments.entry.entry.children.all
+        if arguments.tree
+          get_subtree = Command::GetSubtree.new(target: command.el_root.hash)
+          get_subtree.run
+          files = (files + get_subtree.result.tree).uniq
+        end
+        files
       end
 
       def options
-        {disabled: [], separator: '/', copyOverwrite: 1, archivers: {create: [], extract: []}}
+        {disabled: [], separator: '/', copyOverwrite: 1, archivers: {create: [], extract: []}, path: arguments.entry.full_path}
       end
     end
 
