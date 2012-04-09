@@ -10,12 +10,7 @@ module ElFinder
 
     class Result < Command::Result
       def tree
-        root = command.el_root.entry
-        tree = arguments.entry.entry.ancestors.from_depth(root.depth)
-        tree += arguments.entry.entry.ancestors.from_depth(root.depth).map(&:directories).flatten
-        tree << arguments.entry.entry
-        tree += ::Entry.where(['ancestry_depth <= ?', 2]).directories
-        tree.uniq
+        [command.el_root.entry] + arguments.entry.entry.path(:to_depth => -1).from_depth(command.el_root.entry.depth).flat_map(&:directories)
       end
     end
 
