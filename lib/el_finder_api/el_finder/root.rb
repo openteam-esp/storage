@@ -49,10 +49,6 @@ class ElFinder::Root < ElFinder::Directory
     relative_path
   end
 
-  def attributes
-    %w[name mime hash date size phash read write locked]
-  end
-
   protected
 
     def decode_path(hash)

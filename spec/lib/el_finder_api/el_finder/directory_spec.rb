@@ -24,5 +24,10 @@ module ElFinder
 
       its(:dirs) { should == 1 }
     end
+
+    describe '#el_hash' do
+      subject { el_directory.el_hash }
+      its(:keys) { should include('dirs') }
+    end
   end
 end

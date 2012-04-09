@@ -24,8 +24,8 @@ ActiveRecord::Schema.define(:version => 20111111111111) do
     t.integer  "file_height"
     t.string   "file_mime_type"
     t.string   "file_mime_directory"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   add_index "entries", ["ancestry"], :name => "index_entries_on_ancestry"
