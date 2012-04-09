@@ -13,7 +13,7 @@ module ElFinder
     its(:read) { should == 1 }
     its(:write) { should == 1 }
     its(:locked) { should == 0 }
-    its(:url) { should == "http://localhost:3000/files/#{el_file.entry.id}/#{el_file.name}" }
+    its(:url) { should == "#{Settings['app.url']}/files/#{el_file.entry.id}/#{el_file.name}" }
     its(:attributes) { should_not include('tmb') }
     it { should_not respond_to :dirs }
     # 'bac0d45b625f8d4633435ffbd52ca495.png' - имя файла превьюшки (для картинок). Если файл не имеет превью, но оно может быть создано, поле принимает значение "1"
