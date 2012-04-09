@@ -17,5 +17,12 @@ module ElFinder
     its(:read)      { should == 1 }
     its(:write)     { should == 1 }
     its(:locked)    { should == 0 }
+
+    context "with subdirs" do
+      before { Fabricate :directory_entry, :parent => directory }
+      subject { el_directory(:entry => directory)}
+
+      its(:dirs) { should == 1 }
+    end
   end
 end

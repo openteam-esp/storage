@@ -1,5 +1,5 @@
 module ElFinder
-  class Command::GetDescendants < ElFinder::Command
+  class Command::GetSubtree < ElFinder::Command
     register_in_connector :tree
 
     class Arguments < Command::Arguments
@@ -11,7 +11,7 @@ module ElFinder
 
     class Result < Command::Result
       def tree
-        arguments.entry.entry.descendants(:to_depth => 2).directories
+        arguments.entry.entry.subtree(:to_depth => 2).directories
       end
     end
 

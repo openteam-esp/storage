@@ -1,7 +1,7 @@
 class Entry < ActiveRecord::Base
   has_ancestry :cache_depth => true
 
-  scope :directories, where(:type => 'DirectoryEntry')
+  scope :directories, where(:type => ['DirectoryEntry', 'RootEntry'])
 
   validate :valdate_parent
 
