@@ -33,6 +33,10 @@ module ElFinder
       def options
         {disabled: [], separator: '/', copyOverwrite: 1, archivers: {create: [], extract: []}, path: arguments.entry.full_path}
       end
+
+      def attributes
+        arguments.init ? super : super - [:api, :uplMaxSize]
+      end
     end
 
   end

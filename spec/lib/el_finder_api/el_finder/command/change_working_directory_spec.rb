@@ -18,6 +18,8 @@ module ElFinder
           its(:api)             { should == 2 }
           its(:cwd)             { should == root }
           its(:uplMaxSize)      { should == '16m' }
+          its(:attributes)      { should include(:api) }
+          its(:attributes)      { should include(:uplMaxSize) }
 
           describe '#files' do
             context 'files not exists' do
@@ -38,6 +40,12 @@ module ElFinder
             its(:copyOverwrite) { should == 1 }
             its(:archivers)     { should == {create: [], extract: []} }
           end
+        end
+
+        context '(target: directory)' do
+          let(:params)          { {target: el_directory(:entry => directory).hash} }
+          its(:attributes)      { should_not include(:api) }
+          its(:attributes)      { should_not include(:uplMaxSize) }
         end
 
         context '(init: true, target: directory)' do
