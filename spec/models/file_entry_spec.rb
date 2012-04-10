@@ -52,9 +52,8 @@ describe FileEntry do
   context 'with links to another file in content' do
     before { file }
     before { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml")) }
-    specify { expect{another_file.destroy}.should raise_error }
+    specify { expect{file.destroy}.should raise_error }
   end
-
 
 end
 # == Schema Information

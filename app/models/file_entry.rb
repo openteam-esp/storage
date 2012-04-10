@@ -10,7 +10,7 @@ class FileEntry < Entry
 
   file_accessor :file
 
-  has_many :links, :as => :linkable
+  has_many :links, :as => :linkable, :dependent => :destroy
   accepts_nested_attributes_for :links
 
   def file?
@@ -54,7 +54,7 @@ class FileEntry < Entry
     end
 
     def ensure_has_no_links
-      raise "cann't delete entry because we have links to it" if links?
+      raise "cann't delete entry because we have links to it" if Link.where(:storage_file_id => self.id).any?
     end
 end
 # == Schema Information
