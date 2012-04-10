@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111111111111) do
+ActiveRecord::Schema.define(:version => 20120410053504) do
 
   create_table "entries", :force => true do |t|
     t.string   "type"
@@ -24,11 +24,22 @@ ActiveRecord::Schema.define(:version => 20111111111111) do
     t.integer  "file_height"
     t.string   "file_mime_type"
     t.string   "file_mime_directory"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "entries", ["ancestry"], :name => "index_entries_on_ancestry"
   add_index "entries", ["name"], :name => "index_entries_on_name"
+
+  create_table "links", :force => true do |t|
+    t.integer  "storage_file_id"
+    t.integer  "linkable_id"
+    t.string   "linkable_type"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "links", ["linkable_id", "linkable_type"], :name => "index_links_on_linkable_id_and_linkable_type"
+  add_index "links", ["storage_file_id"], :name => "index_links_on_storage_file_id"
 
 end

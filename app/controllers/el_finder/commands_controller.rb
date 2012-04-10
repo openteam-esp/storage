@@ -9,7 +9,6 @@ module ElFinder
       render :json => command.json
     end
 
-    protected
   end
 end
 

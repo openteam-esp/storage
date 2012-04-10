@@ -3,9 +3,15 @@ class FileEntry < Entry
 
   alias_attribute :file_name, :name
 
-  before_create :set_file_mime_directory
+  before_save :set_file_mime_directory
+  before_save :find_links_to_another_files, :if => :text?
+
+  before_destroy :ensure_has_no_links
 
   file_accessor :file
+
+  has_many :links, :as => :linkable
+  accepts_nested_attributes_for :links
 
   def file?
     true
@@ -15,7 +21,7 @@ class FileEntry < Entry
     DirectoryEntry.find(self)
   end
 
-  %w[audio video].each do | mime_directory |
+  %w[text audio video].each do | mime_directory |
     define_method "#{mime_directory}?" do
       mime_directory == file_mime_directory
     end
@@ -31,6 +37,10 @@ class FileEntry < Entry
       self.file_mime_directory = file_mime_type.split('/')[0]
     end
 
+    def find_links_to_another_files
+      self.links_attributes = self.file.data.scan(%r{#{Settings['app.url']}/files/(\d+)/}).flatten.map{|id| {:storage_file_id => id}}
+    end
+
     def name_of_copy(number)
       "#{file_basename} copy#{number}#{file_extname}"
     end
@@ -41,6 +51,10 @@ class FileEntry < Entry
 
     def file_extname
       File.extname file.name
+    end
+
+    def ensure_has_no_links
+      raise "cann't delete entry because we have links to it" if links?
     end
 end
 # == Schema Information

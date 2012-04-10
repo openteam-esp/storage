@@ -16,6 +16,7 @@ describe FileEntry do
     its(:file_mime_directory) { should == 'text' }
     its('file.data') { should == "some text\n" }
     its(:full_path) { should == "/file.txt" }
+    specify { expect{file.destroy}.should_not raise_error }
 
     context 'in directory' do
       subject { file(:parent => directory) }
@@ -47,6 +48,13 @@ describe FileEntry do
     its(:file_mime_type) { should == 'image/png' }
     its(:file_mime_directory) {  should == 'image' }
   end
+
+  context 'with links to another file in content' do
+    before { file }
+    before { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml")) }
+    specify { expect{another_file.destroy}.should raise_error }
+  end
+
 
 end
 # == Schema Information
