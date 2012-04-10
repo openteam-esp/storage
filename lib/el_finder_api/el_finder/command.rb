@@ -75,7 +75,7 @@ module ElFinder
       def transform(value)
         case value
         when RootEntry, DirectoryEntry, FileEntry then el_root.el_entry(value).el_hash
-        when Array then value.map{|v| transform(v) }
+        when Array, ActiveRecord::Relation then value.map{|v| transform(v) }
         when Hash then value.inject({}) { |h, v| h[v[0]] = transform(v[1]); h }
         else value
         end
