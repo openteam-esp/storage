@@ -54,7 +54,15 @@ class FileEntry < Entry
     end
 
     def ensure_has_no_links
-      raise "cann't delete entry because we have links to it" if Link.where(:storage_file_id => self.id).any?
+      raise Exceptions::UndeletableEntry.new("this file linked by #{link_reference_paths.join(' ')}") if link_references.any?
+    end
+
+    def link_references
+      @link_references ||= Link.where(:storage_file_id => self.id)
+    end
+
+    def link_reference_paths
+      link_references.map(&:linkable).map{|l| l.path.map(&:name).join('/') }
     end
 end
 # == Schema Information
