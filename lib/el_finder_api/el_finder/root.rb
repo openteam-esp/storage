@@ -16,7 +16,7 @@ class ElFinder::Root < ElFinder::Directory
   end
 
   def el_entry(entry)
-    if entry == self.entry
+    if entry == self.entry || entry.nil?
       self
     elsif entry.file?
       ElFinder::File.new :root => self, :entry => entry
