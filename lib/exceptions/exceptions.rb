@@ -1,3 +1,3 @@
 module Exceptions
-  class UndeletableEntry < StandardError; end
+  class LockedEntry < StandardError; end
 end

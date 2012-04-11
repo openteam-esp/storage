@@ -17,6 +17,7 @@ describe FileEntry do
     its('file.data') { should == "some text\n" }
     its(:full_path) { should == "/file.txt" }
     specify { expect{file.destroy}.should_not raise_error }
+    specify { expect{file.update_attributes! :name => 'new.txt'}.should_not raise_error }
 
     context 'in directory' do
       subject { file(:parent => directory) }
@@ -53,6 +54,7 @@ describe FileEntry do
     before { file }
     before { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml")) }
     specify { expect{file.destroy}.should raise_error }
+    specify { expect{file.update_attributes! :name => 'new.txt'}.should raise_error }
     describe 'should have only one link even after double save' do
       subject { another_file }
       before { another_file.save! }

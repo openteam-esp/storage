@@ -6,6 +6,8 @@ class FileEntry < Entry
   before_save :set_file_mime_directory
   before_save :find_links_to_another_files, :if => :text?
 
+  before_update :ensure_has_no_links, :if => :name_changed?
+
   before_destroy :ensure_has_no_links
 
   file_accessor :file
@@ -55,7 +57,7 @@ class FileEntry < Entry
     end
 
     def ensure_has_no_links
-      raise Exceptions::UndeletableEntry.new("this file linked by #{link_reference_paths.join(' ')}") if link_references.any?
+      raise Exceptions::LockedEntry.new("this file linked by #{link_reference_paths.join(' ')}") if link_references.any?
     end
 
     def link_references

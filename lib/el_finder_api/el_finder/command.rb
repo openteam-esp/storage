@@ -51,7 +51,11 @@ module ElFinder
     end
 
     def run
-      self.result = "#{self.class.name}::Result".constantize.new(:arguments => arguments, :execute_command => execute_command, :command => self)
+      begin
+        self.result = "#{self.class.name}::Result".constantize.new(:arguments => arguments, :execute_command => execute_command, :command => self)
+      rescue Exceptions::LockedEntry => e
+        self.result = {error: e.message}
+      end
     end
 
     def headers
@@ -63,10 +67,14 @@ module ElFinder
     end
 
     def json
-      result.el_hash.inject({}) do | result, values |
-        key, value = values
-      result[key] = transform(value)
-      result
+      if result.respond_to? :el_hash
+        result.el_hash.inject({}) do | result, values |
+          key, value = values
+          result[key] = transform(value)
+          result
+        end
+      else
+        result
       end
     end
 
