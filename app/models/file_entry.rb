@@ -33,6 +33,10 @@ class FileEntry < Entry
     file_mime_directory == 'image' && file_width? && file_height?
   end
 
+  def file_path
+    @file_path ||= path.map(&:name).join('/')
+  end
+
   protected
 
     def set_file_mime_directory
@@ -57,7 +61,7 @@ class FileEntry < Entry
     end
 
     def ensure_has_no_links
-      raise Exceptions::LockedEntry.new("this file linked by #{link_reference_paths.join(' ')}") if link_references.any?
+      raise Exceptions::LockedEntry.new("file #{file_path} linked by #{link_reference_paths.join(' ')}") if link_references.any?
     end
 
     def link_references
@@ -65,7 +69,7 @@ class FileEntry < Entry
     end
 
     def link_reference_paths
-      link_references.map(&:linkable).map{|l| l.path.map(&:name).join('/') }
+      link_references.map(&:linkable).map(&:file_path)
     end
 end
 # == Schema Information

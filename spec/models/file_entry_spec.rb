@@ -16,8 +16,6 @@ describe FileEntry do
     its(:file_mime_directory) { should == 'text' }
     its('file.data') { should == "some text\n" }
     its(:full_path) { should == "/file.txt" }
-    specify { expect{file.destroy}.should_not raise_error }
-    specify { expect{file.update_attributes! :name => 'new.txt'}.should_not raise_error }
 
     context 'in directory' do
       subject { file(:parent => directory) }
@@ -51,10 +49,25 @@ describe FileEntry do
   end
 
   context 'with links to another file in content' do
-    before { file }
-    before { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml")) }
+    before { file(:parent => directory) }
+    before { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml"), :parent => another_directory) }
+
     specify { expect{file.destroy}.should raise_error }
     specify { expect{file.update_attributes! :name => 'new.txt'}.should raise_error }
+    specify { expect{directory.destroy}.should raise_error }
+
+    specify { expect{another_file.destroy}.should_not raise_error }
+    specify { expect{another_file.update_attributes! :name => 'new.txt'}.should_not raise_error }
+    specify { expect{another_directory.destroy}.should_not raise_error }
+
+    describe 'physical file should exists if was attempt removing of locked directory' do
+      before { @yet_another_file = Fabricate :file_entry, :file => File.new("#{Rails.root}/spec/fixtures/another_file.txt"), :parent => directory }
+      before { Entry.send(:default_scope, Entry.order('id desc')) }
+      before { directory.destroy rescue nil }
+      specify { FileEntry.find(file.id).file.data.should_not be_nil }
+      specify { FileEntry.find(@yet_another_file.id).file.data.should_not raise_exception Dragonfly::DataStorage::DataNotFound }
+    end
+
     describe 'should have only one link even after double save' do
       subject { another_file }
       before { another_file.save! }

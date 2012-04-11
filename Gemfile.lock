@@ -49,7 +49,7 @@ GEM
     configliere (0.4.8)
       json
     diff-lcs (1.1.3)
-    dragonfly (0.9.11)
+    dragonfly (0.9.12)
       rack
     erubis (2.7.0)
     esp-commons (0.2.3)
