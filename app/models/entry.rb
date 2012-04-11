@@ -42,7 +42,7 @@ class Entry < ActiveRecord::Base
     end
 
     def ensure_has_no_links
-      raise Exceptions::LockedEntry.new("file #{full_path} linked by #{link_reference_paths.join(' ')}") if link_references.any?
+      raise Exceptions::LockedEntry.new("file #{full_path} linked by #{link_reference_paths.join(' ')}") if link_references.any? && !ancestry_callbacks_disabled?
     end
 
     def link_reference_paths
@@ -50,7 +50,7 @@ class Entry < ActiveRecord::Base
     end
 
     def link_references
-      @link_references ||= Link.where(:storage_file_id => subtree_ids)
+      @link_references ||= Link.where(:storage_file_id => subtree_ids).where(['not linkable_id in (?)', subtree_ids])
     end
 end
 
