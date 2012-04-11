@@ -62,8 +62,7 @@ describe FileEntry do
 
     describe 'physical file should exists if was attempt removing of locked directory' do
       before { @yet_another_file = Fabricate :file_entry, :file => File.new("#{Rails.root}/spec/fixtures/another_file.txt"), :parent => directory }
-      before { Entry.send(:default_scope, Entry.order('id desc')) }
-      before { directory.destroy rescue nil }
+      before { Entry.with_scope(Entry.order('id desc')) { directory.destroy rescue nil } }
       specify { FileEntry.find(file.id).file.data.should_not be_nil }
       specify { FileEntry.find(@yet_another_file.id).file.data.should_not raise_exception Dragonfly::DataStorage::DataNotFound }
     end

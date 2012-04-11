@@ -1,4 +1,8 @@
 class Entry < ActiveRecord::Base
+
+  before_destroy :ensure_has_no_links
+  has_many :locks, :class_name => 'Link', :foreign_key => :storage_file_id
+
   has_ancestry :cache_depth => true
 
   scope :directories, where(:type => ['DirectoryEntry', 'RootEntry'])
@@ -37,7 +41,19 @@ class Entry < ActiveRecord::Base
       errors.add :parent, :must_be_a_directory if parent.is_a?(FileEntry)
     end
 
+    def ensure_has_no_links
+      raise Exceptions::LockedEntry.new("file #{file_path} linked by #{link_reference_paths.join(' ')}") if link_references.any?
+    end
+
+    def link_reference_paths
+      link_references.map(&:linkable).map(&:file_path)
+    end
+
+    def link_references
+      @link_references ||= Link.where(:storage_file_id => subtree_ids)
+    end
 end
+
 # == Schema Information
 #
 # Table name: entries

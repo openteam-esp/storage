@@ -8,8 +8,6 @@ class FileEntry < Entry
 
   before_update :ensure_has_no_links, :if => :name_changed?
 
-  before_destroy :ensure_has_no_links
-
   file_accessor :file
 
   has_many :links, :as => :linkable, :dependent => :destroy
@@ -58,18 +56,6 @@ class FileEntry < Entry
 
     def file_extname
       File.extname file.name
-    end
-
-    def ensure_has_no_links
-      raise Exceptions::LockedEntry.new("file #{file_path} linked by #{link_reference_paths.join(' ')}") if link_references.any?
-    end
-
-    def link_references
-      @link_references ||= Link.where(:storage_file_id => self.id)
-    end
-
-    def link_reference_paths
-      link_references.map(&:linkable).map(&:file_path)
     end
 end
 # == Schema Information
