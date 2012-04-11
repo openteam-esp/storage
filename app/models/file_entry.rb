@@ -31,10 +31,6 @@ class FileEntry < Entry
     file_mime_directory == 'image' && file_width? && file_height?
   end
 
-  def file_path
-    @file_path ||= path.map(&:name).join('/')
-  end
-
   protected
 
     def set_file_mime_directory

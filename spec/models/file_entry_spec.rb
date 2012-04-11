@@ -50,7 +50,8 @@ describe FileEntry do
 
   context 'with links to another file in content' do
     before { file(:parent => directory) }
-    before { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml"), :parent => another_directory) }
+    let(:create_another_file)  { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml"), :parent => another_directory) }
+    before { create_another_file }
 
     specify { expect{file.destroy}.should raise_error }
     specify { expect{file.update_attributes! :name => 'new.txt'}.should raise_error }
@@ -65,6 +66,11 @@ describe FileEntry do
       before { Entry.with_scope(Entry.order('id desc')) { directory.destroy rescue nil } }
       specify { FileEntry.find(file.id).file.data.should_not be_nil }
       specify { FileEntry.find(@yet_another_file.id).file.data.should_not raise_exception Dragonfly::DataStorage::DataNotFound }
+    end
+
+    describe 'we can delete whole dir if files cross-linked inside this dir' do
+      let(:create_another_file)  { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml"), :parent => directory) }
+      specify { expect{ directory.destroy }.should_not raise_exception }
     end
 
     describe 'should have only one link even after double save' do

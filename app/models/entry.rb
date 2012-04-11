@@ -42,11 +42,11 @@ class Entry < ActiveRecord::Base
     end
 
     def ensure_has_no_links
-      raise Exceptions::LockedEntry.new("file #{file_path} linked by #{link_reference_paths.join(' ')}") if link_references.any?
+      raise Exceptions::LockedEntry.new("file #{full_path} linked by #{link_reference_paths.join(' ')}") if link_references.any?
     end
 
     def link_reference_paths
-      link_references.map(&:linkable).map(&:file_path)
+      link_references.map(&:linkable).map(&:full_path)
     end
 
     def link_references
