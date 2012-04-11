@@ -1,5 +1,6 @@
 class Link < ActiveRecord::Base
   belongs_to :linkable, :polymorphic => true
+  belongs_to :lock, :class_name => FileEntry, :foreign_key => :storage_file_id
 end
 # == Schema Information
 #

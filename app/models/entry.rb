@@ -42,7 +42,7 @@ class Entry < ActiveRecord::Base
     end
 
     def ensure_has_no_links
-      raise Exceptions::LockedEntry.new("file #{full_path} linked by #{link_reference_paths.join(' ')}") if link_references.any? && !ancestry_callbacks_disabled?
+      raise Exceptions::LockedEntry.new(link_references.map{|link| "#{link.lock.full_path} locked by #{link.linkable.full_path}"}.join("<br/>")) if link_references.any? && !ancestry_callbacks_disabled?
     end
 
     def link_reference_paths
