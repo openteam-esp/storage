@@ -38,6 +38,7 @@ class FileEntry < Entry
     end
 
     def find_links_to_another_files
+      self.links.delete_all
       self.links_attributes = self.file.data.scan(%r{#{Settings['app.url']}/files/(\d+)/}).flatten.map{|id| {:storage_file_id => id}}
     end
 

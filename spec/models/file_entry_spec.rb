@@ -53,6 +53,11 @@ describe FileEntry do
     before { file }
     before { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml")) }
     specify { expect{file.destroy}.should raise_error }
+    describe 'should have only one link even after double save' do
+      subject { another_file }
+      before { another_file.save! }
+      its('links.count') { should == 1 }
+    end
   end
 
 end
