@@ -16,7 +16,7 @@ class DirectoryEntry < Entry
   end
 
   def find_by_path(path)
-    path.to_s.split('/').inject(self) { | entry, name | entry.children.find_by_name!(name) }
+    path.to_s.split('/').reject(&:blank?).inject(self) { | entry, name | entry.children.find_by_name!(name) }
   end
 
   protected
