@@ -50,7 +50,8 @@ describe FileEntry do
 
   context 'with links to another file in content' do
     before { file(:parent => directory) }
-    let(:create_another_file)  { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml"), :parent => another_directory) }
+    let(:subdirectory) { Fabricate :directory_entry, :parent => another_directory}
+    let(:create_another_file)  { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml"), :parent => subdirectory) }
     before { create_another_file }
 
     specify { expect{file.destroy}.should raise_error }
