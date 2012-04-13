@@ -28,8 +28,6 @@ Storage::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
-  config.log_level = :warn
-
   config.to_prepare do
     %w[directory root file].each do |klass|
       require_dependency Rails.root.join("app/models/#{klass}_entry.rb").to_s
