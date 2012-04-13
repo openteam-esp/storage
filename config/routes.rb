@@ -20,5 +20,8 @@ Storage::Application.routes.draw do
     app.fetch(FileEntry.where(:id => params[:id]).find_by_name(params[:name]).file_uid)
   }, :as => :files, :format => false
 
+  delete '/external_links' => 'external_links#destroy'
+  post '/external_links' => 'external_links#create'
+
   root :to => 'el_finder/roots#show'
 end
