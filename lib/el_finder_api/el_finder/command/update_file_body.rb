@@ -17,12 +17,7 @@ module ElFinder
     protected
 
       def execute_command
-        arguments.entry.entry.tap do | entry |
-          name = entry.name
-          entry.file.assign arguments.content.to_s
-          entry.file.save!
-          entry.update_attributes! :name => name
-        end
+        arguments.entry.entry.update_file_content arguments.content.to_s
       end
 
   end

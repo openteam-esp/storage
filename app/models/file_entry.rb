@@ -8,6 +8,8 @@ class FileEntry < Entry
 
   before_update :ensure_has_no_internal_links, :if => :name_changed?
 
+  before_update :send_queue_message, :if => :file_uid_changed?
+
   file_accessor :file
 
   has_many :links, :as => :linkable, :dependent => :destroy
@@ -31,8 +33,18 @@ class FileEntry < Entry
     file_mime_directory == 'image' && file_width? && file_height?
   end
 
-  protected
+  def update_file_content(content)
+    Dir.mktmpdir do |dir|
+      File.open("#{dir}/#{name}", 'w') do |file|
+        file.write(content)
+        file.close
+        self.file = file
+        self.save!
+      end
+    end
+  end
 
+  protected
     def set_file_mime_directory
       self.file_mime_directory = file_mime_type.split('/')[0]
     end
@@ -53,7 +65,12 @@ class FileEntry < Entry
     def file_extname
       File.extname file.name
     end
+
+    def send_queue_message
+      MessageMaker.make_message
+    end
 end
+
 # == Schema Information
 #
 # Table name: entries

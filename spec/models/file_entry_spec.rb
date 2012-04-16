@@ -107,6 +107,19 @@ describe FileEntry do
       end
     end
   end
+
+  context 'sending messages' do
+    describe '#update' do
+      context 'when file content changed' do
+        before { MessageMaker.should_receive(:make_message) }
+        specify { file.update_file_content '0123456789' }
+      end
+      context 'when file content not changed' do
+        before { MessageMaker.should_not_receive(:make_message) }
+        specify { file.update_attribute :name, 'ololo.txt' }
+      end
+    end
+  end
 end
 # == Schema Information
 #
