@@ -81,8 +81,20 @@ describe FileEntry do
     end
   end
 
-  describe '#destroy' do
-    context 'when have external links' do
+  context 'when have external links' do
+    describe '#update' do
+      context 'on directory' do
+        before { Fabricate :external_link, :path => directory.full_path }
+        specify { expect { file(:parent => directory).update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
+        specify { expect { directory.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
+      end
+      context 'on file' do
+        before { Fabricate :external_link, :path => file(:parent => directory).full_path }
+        specify { expect { file.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
+        specify { expect { directory.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
+      end
+    end
+    describe '#destroy' do
       context 'on directory' do
         before { Fabricate :external_link, :path => directory.full_path }
         specify { expect { file(:parent => directory).destroy }.should raise_exception Exceptions::LockedEntry }

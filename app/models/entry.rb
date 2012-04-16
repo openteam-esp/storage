@@ -1,11 +1,15 @@
 class Entry < ActiveRecord::Base
 
-  before_destroy :ensure_has_no_links
+  before_destroy :ensure_has_no_internal_links
+  before_destroy :ensure_has_no_external_links
+  before_update :ensure_has_no_external_links
+
   has_many :locks, :class_name => 'Link', :foreign_key => :storage_file_id
 
   has_many :external_links
 
   has_ancestry :cache_depth => true
+
 
   scope :directories, where(:type => ['DirectoryEntry', 'RootEntry'])
 
@@ -43,15 +47,20 @@ class Entry < ActiveRecord::Base
       errors.add :parent, :must_be_a_directory if parent.is_a?(FileEntry)
     end
 
-    def ensure_has_no_links
+    def ensure_has_no_internal_links
       unless ancestry_callbacks_disabled?
         raise Exceptions::LockedEntry.new(link_references.map{|link| "#{link.lock.full_path} locked by #{link.linkable.full_path}"}.join('<br/>')) if link_references.any?
+      end
+    end
+
+    def ensure_has_no_external_links
+      unless ancestry_callbacks_disabled?
         raise Exceptions::LockedEntry.new(external_link_references.map{|link| "#{link.path} locked by #{link.url}"}.join('<br/>')) if external_link_references.any?
       end
     end
 
     def external_link_references
-      ExternalLink.where(:entry_id => subtree_ids + path_ids)
+      ExternalLink.where(:entry_id => subtree_ids + ancestry_was.split('/'))
     end
 
     def link_reference_paths

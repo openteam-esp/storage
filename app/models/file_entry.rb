@@ -6,7 +6,7 @@ class FileEntry < Entry
   before_save :set_file_mime_directory
   before_save :find_links_to_another_files, :if => :text?
 
-  before_update :ensure_has_no_links, :if => :name_changed?
+  before_update :ensure_has_no_internal_links, :if => :name_changed?
 
   file_accessor :file
 
