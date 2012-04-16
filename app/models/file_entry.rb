@@ -67,7 +67,7 @@ class FileEntry < Entry
     end
 
     def send_queue_message
-      MessageMaker.make_message
+      MessageMaker.make_message(full_path)
     end
 end
 

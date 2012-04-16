@@ -9,12 +9,13 @@ end
 
 group :default do
   gem 'ancestry'
+  gem 'bunny',                          :require => false
   gem 'dragonfly'
-  gem 'inherited_resources'
   gem 'esp-commons'
-  gem 'russian'
+  gem 'inherited_resources'
   gem 'jquery-rails'
   gem 'rails',                          :require => false
+  gem 'russian'
 end
 
 group :development do
@@ -31,6 +32,7 @@ group :test do
   gem 'guard-rspec',                    :require => false
   gem 'guard-spork',                    :require => false
   gem 'libnotify'
+  gem 'moqueue',                        :require => false
   gem 'rb-inotify'
   gem 'rspec-rails',                    :require => false
   gem 'spork',                          :require => false

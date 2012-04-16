@@ -111,7 +111,7 @@ describe FileEntry do
   context 'sending messages' do
     describe '#update' do
       context 'when file content changed' do
-        before { MessageMaker.should_receive(:make_message) }
+        before { MessageMaker.should_receive(:make_message).with(file.full_path) }
         specify { file.update_file_content '0123456789' }
       end
       context 'when file content not changed' do

@@ -3,11 +3,11 @@
 require 'spec_helper'
 
 module ElFinder
-
   describe Command::UpdateFileBody do
     let(:params)        { {target: el_file.hash, :content => '123'} }
 
     describe 'target: file' do
+      before { MessageMaker.stub(:make_message) }
       before { command.run }
       subject { result }
 
@@ -33,5 +33,4 @@ module ElFinder
       end
     end
   end
-
 end
