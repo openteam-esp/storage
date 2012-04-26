@@ -67,7 +67,7 @@ class FileEntry < Entry
     end
 
     def send_queue_message
-      MessageMaker.make_message('storage.updated_files', full_path)
+      MessageMaker.make_message('esp.storage.cms', 'update_content', full_path)
     end
 end
 

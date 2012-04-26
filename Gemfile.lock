@@ -62,7 +62,7 @@ GEM
     dragonfly (0.9.12)
       rack
     erubis (2.7.0)
-    esp-commons (0.2.7)
+    esp-commons (0.2.8)
       active_attr
       curb
       openteam-commons
