@@ -111,16 +111,20 @@ describe FileEntry do
   context 'sending messages' do
     describe '#update' do
       context 'when file content changed' do
-        before { MessageMaker.should_receive(:make_message).with(file.full_path) }
+        before { MessageMaker.should_receive(:make_message).with('storage.updated_files', file.full_path) }
+
         specify { file.update_file_content '0123456789' }
       end
+
       context 'when file content not changed' do
         before { MessageMaker.should_not_receive(:make_message) }
+
         specify { file.update_attribute :name, 'ololo.txt' }
       end
     end
   end
 end
+
 # == Schema Information
 #
 # Table name: entries
