@@ -8,3 +8,15 @@ class ExternalLink < ActiveRecord::Base
       self.entry = RootEntry.instance.find_by_path(path)
     end
 end
+# == Schema Information
+#
+# Table name: external_links
+#
+#  id         :integer         not null, primary key
+#  entry_id   :integer
+#  path       :text
+#  url        :text
+#  created_at :datetime        not null
+#  updated_at :datetime        not null
+#
+
