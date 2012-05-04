@@ -16,7 +16,7 @@ if defined?(Settings) && Settings[:s3]
   end
 else
   app.datastore.configure do |datastore|
-    datastore.root_path = "#{Rails.root}/files/#{Rails.env}"
+    datastore.root_path = "#{Rails.root}/.files/#{Rails.env}"
     datastore.store_meta = false
   end
 end

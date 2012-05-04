@@ -5,9 +5,9 @@
 #   git config --global core.excludesfile ~/.gitignore_global
 
 /.bundle
+/.files
 /bin
 /db/*.sqlite3
-/files
 /log/*.log
 /tmp
 /config/settings.yml
