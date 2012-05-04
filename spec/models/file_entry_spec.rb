@@ -62,7 +62,9 @@ describe FileEntry do
     specify { expect{another_file.update_attributes! :name => 'new.txt'}.should_not raise_error }
     specify { expect{another_directory.destroy}.should_not raise_error }
 
-    describe 'physical file should exists if was attempt removing of locked directory' do
+    specify { expect{file.update_file_content('absolutely new content')}.should_not raise_error }
+
+    describe 'physical file should exists if was attempt of removing locked directory' do
       before { @yet_another_file = Fabricate :file_entry, :file => File.new("#{Rails.root}/spec/fixtures/another_file.txt"), :parent => directory }
       before { Entry.with_scope(Entry.order('id desc')) { directory.destroy rescue nil } }
       specify { FileEntry.find(file.id).file.data.should_not be_nil }
@@ -75,38 +77,38 @@ describe FileEntry do
     end
 
     describe 'should have only one link even after double save' do
-      subject { another_file }
+      subject { file }
       before { another_file.save! }
-      its('links.count') { should == 1 }
+      its('locks.count') { should == 1 }
     end
   end
 
-  context 'when have external links' do
-    describe '#update' do
-      context 'on directory' do
-        before { Fabricate :external_link, :path => directory.full_path }
-        specify { expect { file(:parent => directory).update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
-        specify { expect { directory.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
-      end
-      context 'on file' do
-        before { Fabricate :external_link, :path => file(:parent => directory).full_path }
-        specify { expect { file.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
-        specify { expect { directory.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
-      end
-    end
-    describe '#destroy' do
-      context 'on directory' do
-        before { Fabricate :external_link, :path => directory.full_path }
-        specify { expect { file(:parent => directory).destroy }.should raise_exception Exceptions::LockedEntry }
-        specify { expect { directory.destroy }.should raise_exception Exceptions::LockedEntry }
-      end
-      context 'on file' do
-        before { Fabricate :external_link, :path => file(:parent => directory).full_path }
-        specify { expect { file.destroy }.should raise_exception Exceptions::LockedEntry }
-        specify { expect { directory.destroy }.should raise_exception Exceptions::LockedEntry }
-      end
-    end
-  end
+  #context 'when have external links' do
+    #describe '#update' do
+      #context 'on directory' do
+        #before { Fabricate :external_link, :path => directory.full_path }
+        #specify { expect { file(:parent => directory).update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
+        #specify { expect { directory.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
+      #end
+      #context 'on file' do
+        #before { Fabricate :external_link, :path => file(:parent => directory).full_path }
+        #specify { expect { file.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
+        #specify { expect { directory.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
+      #end
+    #end
+    #describe '#destroy' do
+      #context 'on directory' do
+        #before { Fabricate :external_link, :path => directory.full_path }
+        #specify { expect { file(:parent => directory).destroy }.should raise_exception Exceptions::LockedEntry }
+        #specify { expect { directory.destroy }.should raise_exception Exceptions::LockedEntry }
+      #end
+      #context 'on file' do
+        #before { Fabricate :external_link, :path => file(:parent => directory).full_path }
+        #specify { expect { file.destroy }.should raise_exception Exceptions::LockedEntry }
+        #specify { expect { directory.destroy }.should raise_exception Exceptions::LockedEntry }
+      #end
+    #end
+  #end
 
   context 'sending messages' do
     describe '#update' do

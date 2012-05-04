@@ -15,6 +15,8 @@ Spork.prefork do
     config.mock_with :rspec
     config.use_transactional_fixtures = true
 
+    config.before { MessageMaker.stub(:make_message) }
+
     config.after(:all) do
       FileUtils.rm_rf(Dragonfly[:storage].datastore.root_path)
     end

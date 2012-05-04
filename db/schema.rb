@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120412065940) do
+ActiveRecord::Schema.define(:version => 20120504025110) do
 
   create_table "entries", :force => true do |t|
     t.string   "type"
@@ -31,26 +31,15 @@ ActiveRecord::Schema.define(:version => 20120412065940) do
   add_index "entries", ["ancestry"], :name => "index_entries_on_ancestry"
   add_index "entries", ["name"], :name => "index_entries_on_name"
 
-  create_table "external_links", :force => true do |t|
+  create_table "locks", :force => true do |t|
+    t.string   "type"
     t.integer  "entry_id"
-    t.text     "path"
-    t.text     "url"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.integer  "file_entry_id"
+    t.string   "entry_path"
+    t.string   "entry_url"
+    t.string   "external_url"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
-
-  add_index "external_links", ["path"], :name => "index_external_links_on_path"
-  add_index "external_links", ["url"], :name => "index_external_links_on_url"
-
-  create_table "links", :force => true do |t|
-    t.integer  "storage_file_id"
-    t.integer  "linkable_id"
-    t.string   "linkable_type"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
-  end
-
-  add_index "links", ["linkable_id", "linkable_type"], :name => "index_links_on_linkable_id_and_linkable_type"
-  add_index "links", ["storage_file_id"], :name => "index_links_on_storage_file_id"
 
 end

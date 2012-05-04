@@ -4,16 +4,15 @@ class FileEntry < Entry
   alias_attribute :file_name, :name
 
   before_save :set_file_mime_directory
-  before_save :find_links_to_another_files, :if => :text?
+  after_save :create_locks, :if => :text?
 
-  before_update :ensure_has_no_internal_links, :if => :name_changed?
+#  before_update :ensure_has_no_internal_links, :if => :name_changed?
 
   before_update :send_queue_message, :if => :file_uid_changed?
 
-  file_accessor :file
+  has_many :internal_locks
 
-  has_many :links, :as => :linkable, :dependent => :destroy
-  accepts_nested_attributes_for :links
+  file_accessor :file
 
   def file?
     true
@@ -49,9 +48,11 @@ class FileEntry < Entry
       self.file_mime_directory = file_mime_type.split('/')[0]
     end
 
-    def find_links_to_another_files
-      self.links.delete_all
-      self.links_attributes = self.file.data.scan(%r{#{Settings['app.url']}/files/(\d+)/}).flatten.map{|id| {:storage_file_id => id}}
+    def create_locks
+      internal_locks.destroy_all
+      file.data.scan(%r{#{Settings['app.url']}/files/(\d+)/}).flatten.each do | id |
+        internal_locks.create! :entry_id => id
+      end
     end
 
     def name_of_copy(number)

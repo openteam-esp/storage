@@ -1,15 +1,11 @@
 class Entry < ActiveRecord::Base
 
-  before_destroy :ensure_has_no_internal_links
-  before_destroy :ensure_has_no_external_links
-  before_update :ensure_has_no_external_links
+  before_destroy :ensure_has_no_subtree_locks
+  before_update :ensure_has_no_subtree_locks, :if => :name_changed?
 
-  has_many :locks, :class_name => 'Link', :foreign_key => :storage_file_id
-
-  has_many :external_links
+  has_many :locks
 
   has_ancestry :cache_depth => true
-
 
   scope :directories, where(:type => ['DirectoryEntry', 'RootEntry'])
 
@@ -47,28 +43,28 @@ class Entry < ActiveRecord::Base
       errors.add :parent, :must_be_a_directory if parent.is_a?(FileEntry)
     end
 
-    def ensure_has_no_internal_links
+    def ensure_has_no_subtree_locks
       unless ancestry_callbacks_disabled?
-        raise Exceptions::LockedEntry.new(link_references.map{|link| "#{link.lock.full_path} locked by #{link.linkable.full_path}"}.join('<br/>')) if link_references.any?
+        raise Exceptions::LockedEntry.new("#{full_path} locked by " + locks_subtree.join('<br/>')) if locks_subtree.any?
       end
     end
 
-    def ensure_has_no_external_links
-      unless ancestry_callbacks_disabled?
-        raise Exceptions::LockedEntry.new(external_link_references.map{|link| "#{link.path} locked by #{link.url}"}.join('<br/>')) if external_link_references.any?
-      end
-    end
+    #def ensure_has_no_external_links
+      #unless ancestry_callbacks_disabled?
+        #raise Exceptions::LockedEntry.new(external_link_references.map{|link| "#{link.path} locked by #{link.url}"}.join('<br/>')) if external_link_references.any?
+      #end
+    #end
 
-    def external_link_references
-      ExternalLink.where(:entry_id => subtree_ids + ancestry_was.split('/'))
-    end
+    #def external_link_references
+      #ExternalLink.where(:entry_id => subtree_ids + ancestry_was.split('/'))
+    #end
 
-    def link_reference_paths
-      link_references.map(&:linkable).map(&:full_path)
-    end
+    #def link_reference_paths
+      #link_references.map(&:linkable).map(&:full_path)
+    #end
 
-    def link_references
-      @link_references ||= Link.where(:storage_file_id => subtree_ids).where(['not linkable_id in (?)', subtree_ids])
+    def locks_subtree
+      @locks_subtree ||= Lock.where(:entry_id => subtree_ids).where(['not file_entry_id in (?)', subtree_ids])
     end
 end
 
