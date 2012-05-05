@@ -18,7 +18,7 @@ class ElFinder::File < ElFinder::Entry
   def attributes
     attributes = super
     attributes << 'url'
-    attributes << 'tmb' if entry.image?
+    attributes << 'tmb' if entry.resizable?
     attributes
   end
 

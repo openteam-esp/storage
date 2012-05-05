@@ -37,8 +37,12 @@ class FileEntry < Entry
     end
   end
 
+  def resizable?
+    image? && file_width? && file_height?
+  end
+
   def url
-    if image? && file_width? && file_height?
+    if resizable?
       resized_image_url width: file_width, height: file_height
     else
       url_for :file
