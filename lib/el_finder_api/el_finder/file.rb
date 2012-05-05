@@ -8,15 +8,11 @@ class ElFinder::File < ElFinder::Entry
   end
 
   def url
-    if entry.image?
-      url_for :resized_image, width: entry.file_width, height: entry.file_height
-    else
-      url_for :file
-    end
+    entry.url
   end
 
   def tmb
-    url_for(:resized_image, width: 48, height: 48)
+    entry.resized_image_url width: 48, height: 48
   end
 
   def attributes
@@ -25,10 +21,5 @@ class ElFinder::File < ElFinder::Entry
     attributes << 'tmb' if entry.image?
     attributes
   end
-
-  protected
-    def url_for(helper, options={})
-      Settings['app.url'] + Rails.application.routes.url_helpers.send("#{helper}s_path", options.merge(id: entry.id, name: name))
-    end
 
 end

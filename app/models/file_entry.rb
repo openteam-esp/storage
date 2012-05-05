@@ -6,8 +6,6 @@ class FileEntry < Entry
   before_save :set_file_mime_directory
   after_save :create_locks, :if => :text?
 
-#  before_update :ensure_has_no_internal_links, :if => :name_changed?
-
   before_update :send_queue_message, :if => :file_uid_changed?
 
   has_many :internal_locks
@@ -22,14 +20,10 @@ class FileEntry < Entry
     DirectoryEntry.find(self)
   end
 
-  %w[text audio video].each do | mime_directory |
+  %w[text image].each do | mime_directory |
     define_method "#{mime_directory}?" do
       mime_directory == file_mime_directory
     end
-  end
-
-  def image?
-    file_mime_directory == 'image' && file_width? && file_height?
   end
 
   def update_file_content(content)
@@ -43,7 +37,23 @@ class FileEntry < Entry
     end
   end
 
+  def url
+    if image? && file_width? && file_height?
+      resized_image_url width: file_width, height: file_height
+    else
+      url_for :file
+    end
+  end
+
+  def resized_image_url(params={})
+    url_for :resized_image, params
+  end
+
   protected
+    def url_for(helper, options={})
+      Settings['app.url'] + Rails.application.routes.url_helpers.send("#{helper}s_path", options.merge(id: id, name: name))
+    end
+
     def set_file_mime_directory
       self.file_mime_directory = file_mime_type.split('/')[0]
     end
