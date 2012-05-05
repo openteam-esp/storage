@@ -55,20 +55,6 @@ class Entry < ActiveRecord::Base
     end
 
   private
-    #def ensure_has_no_external_links
-      #unless ancestry_callbacks_disabled?
-        #raise Exceptions::LockedEntry.new(external_link_references.map{|link| "#{link.path} locked by #{link.url}"}.join('<br/>')) if external_link_references.any?
-      #end
-    #end
-
-    #def external_link_references
-      #ExternalLink.where(:entry_id => subtree_ids + ancestry_was.split('/'))
-    #end
-
-    #def link_reference_paths
-      #link_references.map(&:linkable).map(&:full_path)
-    #end
-
     def subtree_locks
       @subtree_locks ||= Lock.where(:entry_id => subtree_ids).where(['(file_entry_id is null) or (file_entry_id not in (?))', subtree_ids])
     end

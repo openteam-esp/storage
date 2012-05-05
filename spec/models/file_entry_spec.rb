@@ -120,42 +120,6 @@ describe FileEntry do
         end
       end
     end
-    #context 'by url' do
-      #before { Fabricate :external_lock_by_url, :entry_url => entry.full_path }
-      #context 'on directory' do
-        #let(:entry) {directory}
-        #describe '#update' do
-          #context 'parent' do
-            #specify { expect{directory.update_attribute(:parent, another_directory)}.should raise_exception Exceptions::LockedEntry }
-            #specify { expect{file(:parent => directory).update_attribute(:parent, another_directory)}.should_not raise_exception Exceptions::LockedEntry }
-          #end
-          #context 'name' do
-            #specify { expect{directory.update_attribute(:name, 'new_name')}.should raise_exception Exceptions::LockedEntry }
-            #specify { expect{file(:parent => directory).update_attribute(:name, 'new_name')}.should_not raise_exception Exceptions::LockedEntry }
-          #end
-        #end
-        #describe '#destroy' do
-          #specify { expect{file(:parent => directory).destroy}.should_not raise_exception Exceptions::LockedEntry }
-          #specify { expect{directory.destroy}.should raise_exception Exceptions::LockedEntry }
-        #end
-      #end
-      #context 'on file' do
-        #let(:entry) { file(:parent => directory) }
-        #describe '#update' do
-          #context 'parent' do
-            #specify { expect{file.update_attribute(:parent, another_directory) }.should raise_exception Exceptions::LockedEntry }
-            #specify { expect{directory.update_attribute(:parent, another_directory) }.should raise_exception Exceptions::LockedEntry }
-          #end
-          #context 'content' do
-            #specify { expect{file.update_file_content('123123')}.should_not raise_exception Exceptions::LockedEntry }
-          #end
-        #end
-        #describe '#destroy' do
-          #specify { expect{file.destroy}.should raise_exception Exceptions::LockedEntry }
-          #specify { expect{directory.destroy}.should raise_exception Exceptions::LockedEntry }
-        #end
-      #end
-    #end
   end
 
   context 'sending messages' do

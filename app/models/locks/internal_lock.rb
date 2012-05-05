@@ -1,6 +1,10 @@
 class InternalLock < Lock
   belongs_to :file_entry
   validates_presence_of :file_entry
+
+  def to_s
+    file_entry.full_path
+  end
 end
 # == Schema Information
 #

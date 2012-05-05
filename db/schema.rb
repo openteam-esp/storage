@@ -42,4 +42,11 @@ ActiveRecord::Schema.define(:version => 20120504025110) do
     t.datetime "updated_at",    :null => false
   end
 
+  add_index "locks", ["entry_id"], :name => "index_locks_on_entry_id"
+  add_index "locks", ["entry_path"], :name => "index_locks_on_entry_path"
+  add_index "locks", ["entry_url"], :name => "index_locks_on_entry_url"
+  add_index "locks", ["external_url"], :name => "index_locks_on_external_url"
+  add_index "locks", ["file_entry_id"], :name => "index_locks_on_file_entry_id"
+  add_index "locks", ["type"], :name => "index_locks_on_type"
+
 end

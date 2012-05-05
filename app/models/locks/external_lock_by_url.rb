@@ -1,7 +1,10 @@
 class ExternalLockByUrl < Lock
   validates_presence_of :entry_url, :external_url
-
   before_validation :find_entry, :if => :entry_url?
+
+  def to_s
+    external_url
+  end
 
   protected
     def find_entry

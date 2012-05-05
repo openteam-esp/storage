@@ -2,6 +2,10 @@ class ExternalLockByPath < Lock
   validates_presence_of :entry_path, :external_url
   before_validation :find_entry, :if => :entry_path?
 
+  def to_s
+    external_url
+  end
+
   protected
     def find_entry
       self.entry = RootEntry.instance.find_by_path(entry_path)
