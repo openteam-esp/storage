@@ -1,5 +1,14 @@
 class ExternalLockByUrl < Lock
+  validates_presence_of :entry_url, :external_url
 
+  before_validation :find_entry, :if => :entry_url?
+
+  protected
+    def find_entry
+      entry_url.match(%r{#{Settings['app.url']}/files/(\d+)/}) do
+        self.entry = FileEntry.find($1)
+      end
+    end
 end
 # == Schema Information
 #

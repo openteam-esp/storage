@@ -1,11 +1,13 @@
-class ExternalLockByPath < Lock
-  validates_presence_of :entry_path, :external_url
-  before_validation :find_entry, :if => :entry_path?
+require 'spec_helper'
 
-  protected
-    def find_entry
-      self.entry = RootEntry.instance.find_by_path(entry_path)
-    end
+describe ExternalLockByPath do
+  it { should validate_presence_of :entry_path }
+  it { should validate_presence_of :external_url }
+
+  describe '#create' do
+    subject{ ExternalLockByPath.create! :entry_path => file.full_path, :external_url => 'some url' }
+    its(:entry) { should == file }
+  end
 end
 # == Schema Information
 #

@@ -1,7 +1,10 @@
 class Entry < ActiveRecord::Base
 
-  before_destroy :ensure_has_no_subtree_locks
-  before_update :ensure_has_no_subtree_locks, :if => :name_changed?
+  before_destroy :ensure_has_no_subtree_locks, :unless => :ancestry_callbacks_disabled?
+
+  before_update :ensure_has_no_subtree_locks, :if => :name_changed?, :unless => :ancestry_callbacks_disabled?
+
+  before_save :ensure_has_no_subtree_external_locks_by_path, :if => :ancestry_changed?, :unless => [:new_record?, :ancestry_callbacks_disabled?]
 
   has_many :locks
 
@@ -44,11 +47,14 @@ class Entry < ActiveRecord::Base
     end
 
     def ensure_has_no_subtree_locks
-      unless ancestry_callbacks_disabled?
-        raise Exceptions::LockedEntry.new("#{full_path} locked by " + locks_subtree.join('<br/>')) if locks_subtree.any?
-      end
+      raise Exceptions::LockedEntry.new("#{full_path} locked by " + subtree_locks.join('<br/>')) if subtree_locks.any?
     end
 
+    def ensure_has_no_subtree_external_locks_by_path
+      raise Exceptions::LockedEntry.new("#{full_path} locked by " + subtree_external_locks_by_path.join('<br/>')) if subtree_external_locks_by_path.any?
+    end
+
+  private
     #def ensure_has_no_external_links
       #unless ancestry_callbacks_disabled?
         #raise Exceptions::LockedEntry.new(external_link_references.map{|link| "#{link.path} locked by #{link.url}"}.join('<br/>')) if external_link_references.any?
@@ -63,8 +69,12 @@ class Entry < ActiveRecord::Base
       #link_references.map(&:linkable).map(&:full_path)
     #end
 
-    def locks_subtree
-      @locks_subtree ||= Lock.where(:entry_id => subtree_ids).where(['not file_entry_id in (?)', subtree_ids])
+    def subtree_locks
+      @subtree_locks ||= Lock.where(:entry_id => subtree_ids).where(['(file_entry_id is null) or (file_entry_id not in (?))', subtree_ids])
+    end
+
+    def subtree_external_locks_by_path
+      @subtree_external_locks_by_path = subtree_locks.where(:type => ExternalLockByPath)
     end
 end
 

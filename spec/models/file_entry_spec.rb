@@ -48,7 +48,7 @@ describe FileEntry do
     its(:file_mime_directory) {  should == 'image' }
   end
 
-  context 'with links to another file in content' do
+  context 'with internal locks' do
     before { file(:parent => directory) }
     let(:subdirectory) { Fabricate :directory_entry, :parent => another_directory}
     let(:create_another_file)  { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml"), :parent => subdirectory) }
@@ -83,32 +83,80 @@ describe FileEntry do
     end
   end
 
-  #context 'when have external links' do
-    #describe '#update' do
+  context 'whith external locks' do
+    context 'by path' do
+      before { Fabricate :external_lock_by_path, :entry_path => entry.full_path }
+      context 'on directory' do
+        let(:entry) {directory}
+        describe '#update' do
+          context 'parent' do
+            specify { expect{directory.update_attribute(:parent, another_directory)}.should raise_exception Exceptions::LockedEntry }
+            specify { expect{file(:parent => directory).update_attribute(:parent, another_directory)}.should_not raise_exception Exceptions::LockedEntry }
+          end
+          context 'name' do
+            specify { expect{directory.update_attribute(:name, 'new_name')}.should raise_exception Exceptions::LockedEntry }
+            specify { expect{file(:parent => directory).update_attribute(:name, 'new_name')}.should_not raise_exception Exceptions::LockedEntry }
+          end
+        end
+        describe '#destroy' do
+          specify { expect{file(:parent => directory).destroy}.should_not raise_exception Exceptions::LockedEntry }
+          specify { expect{directory.destroy}.should raise_exception Exceptions::LockedEntry }
+        end
+      end
+      context 'on file' do
+        let(:entry) { file(:parent => directory) }
+        describe '#update' do
+          context 'parent' do
+            specify { expect{file.update_attribute(:parent, another_directory) }.should raise_exception Exceptions::LockedEntry }
+            specify { expect{directory.update_attribute(:parent, another_directory) }.should raise_exception Exceptions::LockedEntry }
+          end
+          context 'content' do
+            specify { expect{file.update_file_content('123123')}.should_not raise_exception Exceptions::LockedEntry }
+          end
+        end
+        describe '#destroy' do
+          specify { expect{file.destroy}.should raise_exception Exceptions::LockedEntry }
+          specify { expect{directory.destroy}.should raise_exception Exceptions::LockedEntry }
+        end
+      end
+    end
+    #context 'by url' do
+      #before { Fabricate :external_lock_by_url, :entry_url => entry.full_path }
       #context 'on directory' do
-        #before { Fabricate :external_link, :path => directory.full_path }
-        #specify { expect { file(:parent => directory).update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
-        #specify { expect { directory.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
+        #let(:entry) {directory}
+        #describe '#update' do
+          #context 'parent' do
+            #specify { expect{directory.update_attribute(:parent, another_directory)}.should raise_exception Exceptions::LockedEntry }
+            #specify { expect{file(:parent => directory).update_attribute(:parent, another_directory)}.should_not raise_exception Exceptions::LockedEntry }
+          #end
+          #context 'name' do
+            #specify { expect{directory.update_attribute(:name, 'new_name')}.should raise_exception Exceptions::LockedEntry }
+            #specify { expect{file(:parent => directory).update_attribute(:name, 'new_name')}.should_not raise_exception Exceptions::LockedEntry }
+          #end
+        #end
+        #describe '#destroy' do
+          #specify { expect{file(:parent => directory).destroy}.should_not raise_exception Exceptions::LockedEntry }
+          #specify { expect{directory.destroy}.should raise_exception Exceptions::LockedEntry }
+        #end
       #end
       #context 'on file' do
-        #before { Fabricate :external_link, :path => file(:parent => directory).full_path }
-        #specify { expect { file.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
-        #specify { expect { directory.update_attribute(:parent, root) }.should raise_exception Exceptions::LockedEntry }
+        #let(:entry) { file(:parent => directory) }
+        #describe '#update' do
+          #context 'parent' do
+            #specify { expect{file.update_attribute(:parent, another_directory) }.should raise_exception Exceptions::LockedEntry }
+            #specify { expect{directory.update_attribute(:parent, another_directory) }.should raise_exception Exceptions::LockedEntry }
+          #end
+          #context 'content' do
+            #specify { expect{file.update_file_content('123123')}.should_not raise_exception Exceptions::LockedEntry }
+          #end
+        #end
+        #describe '#destroy' do
+          #specify { expect{file.destroy}.should raise_exception Exceptions::LockedEntry }
+          #specify { expect{directory.destroy}.should raise_exception Exceptions::LockedEntry }
+        #end
       #end
     #end
-    #describe '#destroy' do
-      #context 'on directory' do
-        #before { Fabricate :external_link, :path => directory.full_path }
-        #specify { expect { file(:parent => directory).destroy }.should raise_exception Exceptions::LockedEntry }
-        #specify { expect { directory.destroy }.should raise_exception Exceptions::LockedEntry }
-      #end
-      #context 'on file' do
-        #before { Fabricate :external_link, :path => file(:parent => directory).full_path }
-        #specify { expect { file.destroy }.should raise_exception Exceptions::LockedEntry }
-        #specify { expect { directory.destroy }.should raise_exception Exceptions::LockedEntry }
-      #end
-    #end
-  #end
+  end
 
   context 'sending messages' do
     describe '#update' do
