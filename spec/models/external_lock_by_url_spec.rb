@@ -4,8 +4,17 @@ describe ExternalLockByUrl do
   it { should validate_presence_of :entry_url }
   it { should validate_presence_of :external_url }
 
+  def create_subject
+    ExternalLockByUrl.create! :entry_url => "#{Settings['app.url']}/files/#{file.id}/#{file.name}", :external_url => 'some url'
+  end
+
+  describe 'uniqueness of external_url' do
+    before { create_subject }
+    it { should validate_uniqueness_of(:external_url).scoped_to(:entry_id) }
+  end
+
   describe '#create' do
-    subject{ ExternalLockByUrl.create! :entry_url => "#{Settings['app.url']}/files/#{file.id}/#{file.name}", :external_url => 'some url' }
+    subject{ create_subject }
     its(:entry) { should == file }
   end
 end
