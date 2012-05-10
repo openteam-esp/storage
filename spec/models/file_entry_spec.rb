@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe FileEntry do
+  it { should have_many(:internal_locks).dependent(:destroy) }
   it { should validate_presence_of :name }
   it { should validate_presence_of :parent }
   it { should_not allow_value(file).for(:parent) }

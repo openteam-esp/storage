@@ -8,7 +8,7 @@ class FileEntry < Entry
 
   before_update :send_queue_message, :if => :file_uid_changed?
 
-  has_many :internal_locks
+  has_many :internal_locks, :dependent => :destroy
 
   file_accessor :file
 
@@ -64,7 +64,7 @@ class FileEntry < Entry
 
     def create_locks
       internal_locks.destroy_all
-      file.data.scan(%r{#{Settings['app.url']}/files/(\d+)/}).flatten.each do | id |
+      file.data.scan(%r{#{Settings['app.url']}/files/(\d+)/}).flatten.uniq.each do | id |
         internal_locks.create! :entry_id => id
       end
     end
