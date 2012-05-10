@@ -1,10 +1,17 @@
 class InternalLock < Lock
   belongs_to :file_entry
   validates_presence_of :file_entry
+  validates_uniqueness_of :file_entry_id, :scope => :entry_id
+  validate :can_not_link_to_self
 
   def to_s
     file_entry.full_path
   end
+
+  private
+    def can_not_link_to_self
+      errors.add(:file_entry, "Cann't create link to self") if entry == file_entry
+    end
 end
 # == Schema Information
 #
