@@ -27,6 +27,7 @@ module ElFinder
       it { command_for(:rm).should be_a(ElFinder::Command::DestroyEntries) }
       it { command_for(:tree).should be_a(ElFinder::Command::GetSubtree) }
       it { command_for(:upload).should be_a(ElFinder::Command::UploadFiles) }
+      it { command_for(:ls).should be_a(ElFinder::Command::ListNames) }
       xit { command_for(:archive).should be_a(ElFinder::Command::PackEntries) }
       xit { command_for(:extract).should be_a(ElFinder::Command::UnpackEntry) }
       xit { command_for(:resize).should be_a(ElFinder::Command::ResizeImage) }

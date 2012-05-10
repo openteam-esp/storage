@@ -1,14 +1,18 @@
-class ElFinder::Command::ListNames < ElFinder::Command
-  register_in_connector :ls
-  options :target
+module ElFinder
+  class Command::ListNames < ElFinder::Command
+    register_in_connector :ls
 
-  protected
+    class Arguments < Command::Arguments
+      attr_accessor :target
 
-    def hash
-      if target
-        { list: directory.files.map(&:entry_name) }
-      else
-        wrong_params_hash
+      validates_presence_of :target
+      validates :entry, :is_a_directory => true
+    end
+
+    class Result < Command::Result
+      def list
+        arguments.entry.entry.children.directories.map(&:name)
       end
     end
+  end
 end
