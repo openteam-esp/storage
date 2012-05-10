@@ -64,5 +64,11 @@ module Storage
       generators.view_specs           true
     end
 
+    config.to_prepare do
+      Dir.glob("#{Rails.root}/app/modes/locks/*.rb") do | file |
+        require_dependency file
+      end
+    end
+
   end
 end

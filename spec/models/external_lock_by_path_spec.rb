@@ -4,6 +4,10 @@ describe ExternalLockByPath do
   it { should validate_presence_of :entry_path }
   it { should validate_presence_of :external_url }
 
+  def create_subject
+    ExternalLockByPath.create! :entry_path => file.full_path, :external_url => 'some url'
+  end
+
   describe '#create' do
     subject{ ExternalLockByPath.create! :entry_path => file.full_path, :external_url => 'some url' }
     its(:entry) { should == file }
