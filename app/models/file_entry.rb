@@ -63,8 +63,15 @@ class FileEntry < Entry
     end
 
     def create_locks
-      internal_locks.destroy_all
-      file.data.scan(%r{#{Settings['app.url']}/files/(\d+)/}).flatten.uniq.each do | id |
+      old_entry_ids = internal_locks(true).pluck(:entry_id)
+      new_entry_ids = file.data.scan(%r{#{Settings['app.url']}/files/(\d+)/}).flatten.uniq.map(&:to_i)
+
+      entry_ids_to_add = new_entry_ids - old_entry_ids
+      entry_ids_to_remove = old_entry_ids - new_entry_ids
+
+      internal_locks.where(:entry_id => entry_ids_to_remove).destroy_all
+
+      entry_ids_to_add.each do |id|
         internal_locks.create! :entry_id => id
       end
     end
