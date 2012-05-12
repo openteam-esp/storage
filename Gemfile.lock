@@ -63,7 +63,7 @@ GEM
     dragonfly (0.9.12)
       rack
     erubis (2.7.0)
-    esp-commons (0.4.0)
+    esp-commons (0.4.2)
       active_attr
       amqp
       bunny
