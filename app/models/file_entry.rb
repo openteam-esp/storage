@@ -90,6 +90,7 @@ class FileEntry < Entry
 
     def send_queue_message
       MessageMaker.make_message('esp.storage.cms', 'update_content', full_path)
+      MessageMaker.make_message('esp.storage.blue-pages', 'update_content', full_path)
     end
 end
 
