@@ -1,7 +1,6 @@
 source :rubygems
 
 group :assets do
-  gem 'coffee-rails'
   gem 'sass-rails'
   gem 'therubyracer'                                                        unless RUBY_PLATFORM =~ /freebsd/
   gem 'uglifier'
@@ -39,4 +38,3 @@ group :test do
   gem 'sqlite3',                        :require => false
   gem 'shoulda-matchers',               :require => false
 end
-

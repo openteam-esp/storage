@@ -18,7 +18,7 @@ module ElFinder
         before { another_directory parent: directory, :name => 'ololo' } # make subdirectory
         before { el_file }
         let(:params) { {target: el_root.hash } }
-        it { should == [directory.name] }
+        it { should == [directory.name, el_file.name] }
       end
 
     end

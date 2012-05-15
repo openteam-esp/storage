@@ -11,7 +11,7 @@ module ElFinder
 
     class Result < Command::Result
       def list
-        arguments.entry.entry.children.directories.map(&:name)
+        arguments.entry.entry.children.map(&:name)
       end
     end
   end
