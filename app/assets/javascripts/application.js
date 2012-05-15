@@ -4,9 +4,8 @@
  * It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
  * the compiled file.
  *
- *= require jquery.min.js
- *= require jquery-ui.min.js
- *= require jquery_ujs.js
+ *= require jquery
+ *= require jquery-ui
  *= require elfinder.js
  *= require i18n/elfinder.ru.js
  */
@@ -14,6 +13,22 @@ $(function() {
   $('#elfinder').elfinder({
     lang: 'ru',
     height: '600',
+    uiOptions : {
+      toolbar : [
+        ['home', 'up'],
+        ['back', 'forward'],
+        ['reload'],
+        ['mkdir', 'mkfile', 'upload'],
+        ['open', 'download'],
+        ['info'],
+        ['quicklook'],
+        ['copy', 'cut', 'paste'],
+        ['rm'],
+        ['duplicate', 'rename', 'edit'],
+        ['view'],
+        ['help']
+      ]
+    },
     url: '/api/el_finder/v2'
   });
 });
