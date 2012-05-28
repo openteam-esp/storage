@@ -55,6 +55,10 @@ describe FileEntry do
     let(:create_another_file)  { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml"), :parent => subdirectory) }
     before { create_another_file }
 
+    subject { file }
+
+    its('locks.count') { should == 1 }
+
     specify { expect{file.destroy}.should raise_error }
     specify { expect{file.update_attributes! :name => 'new.txt'}.should raise_error }
     specify { expect{directory.destroy}.should raise_error }
