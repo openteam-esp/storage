@@ -29,16 +29,16 @@ module ElFinder
         end
 
         context 'with siblings' do
-          before { @subdirectory_sibling = Fabricate :directory_entry, :parent => directory }
+          before { @subdirectory_sibling = Fabricate :directory_entry, :parent => directory, :name => 'sibling' }
           it { should == [root, directory, another_directory, @subdirectory_sibling ] }
         end
 
         context 'directory has sibling' do
-          before { @directory_sibling = Fabricate :directory_entry, :parent => root }
+          before { @directory_sibling = Fabricate :directory_entry, :parent => root, :name => 'directory_entry' }
           it { should == [root, directory, @directory_sibling, another_directory] }
 
           context 'sibling has child' do
-            before { Fabricate :directory_entry, :parent => @directory_sibling }
+            before { Fabricate :directory_entry, :parent => @directory_sibling, :name => 'directory_entry' }
             it { should == [root, directory, @directory_sibling, another_directory] }
           end
         end

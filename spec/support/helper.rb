@@ -5,7 +5,7 @@ module Helper
   alias :create_directory :directory
 
   def another_directory(options={})
-    @another_directory||= Fabricate :directory_entry, options
+    @another_directory ||= Fabricate :directory_entry, {:name => 'another_directory'}.merge(options)
   end
   alias :create_another_directory :another_directory
 
@@ -15,7 +15,7 @@ module Helper
   alias :create_file :file
 
   def another_file(options={})
-    @another_file ||= Fabricate :file_entry, options
+    @another_file ||= Fabricate :file_entry, {:name => 'anoter_file.txt'}.merge(options)
   end
   alias :create_another_file :another_file
 

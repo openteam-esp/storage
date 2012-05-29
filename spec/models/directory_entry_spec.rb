@@ -18,8 +18,8 @@ describe DirectoryEntry do
     context 'in directory' do
       subject           { another_directory(:parent => directory) }
 
-      its(:name)        { should == 'directory' }
-      its(:full_path)   { should == '/directory/directory' }
+      its(:name)        { should == 'another_directory' }
+      its(:full_path)   { should == '/directory/another_directory' }
     end
   end
 
@@ -49,7 +49,7 @@ describe DirectoryEntry do
         describe '#first' do
           subject       { duplicated.descendants.first }
 
-          its(:name)    { should == 'directory' }
+          its(:name)    { should == 'another_directory' }
           its(:depth)   { should == 2 }
         end
 

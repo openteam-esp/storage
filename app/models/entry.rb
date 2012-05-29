@@ -6,7 +6,7 @@ class Entry < ActiveRecord::Base
 
   before_save :ensure_has_no_subtree_external_locks_by_path, :if => :ancestry_changed?, :unless => [:new_record?, :ancestry_callbacks_disabled?]
 
-  #validates_uniqueness_of :name, :scope => :ancestry
+  validates_uniqueness_of :name, :scope => :ancestry
 
   has_many :locks
 
