@@ -26,19 +26,14 @@ class FileEntry < Entry
     end
   end
 
-  def update_file_content(content_or_file)
+  def update_file_content(content)
     Dir.mktmpdir do |dir|
-      file_path = "#{dir}/#{name}"
-
-      content_or_file = content_or_file.tempfile if content_or_file.respond_to?(:tempfile)
-      if content_or_file.is_a?(String)
-        ::File.open(file_path, 'wb') { |f| f.write(content_or_file) }
-      else
-        FileUtils.cp content_or_file.path, file_path
+      File.open("#{dir}/#{name}", 'w') do |file|
+        file.write(content)
+        file.close
+        self.file = file
+        self.save!
       end
-
-      self.file = ::File.new(file_path)
-      self.save!
     end
   end
 
