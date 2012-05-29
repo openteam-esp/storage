@@ -53,7 +53,7 @@ module ElFinder
     def run
       begin
         self.result = "#{self.class.name}::Result".constantize.new(:arguments => arguments, :execute_command => execute_command, :command => self)
-      rescue Exceptions::LockedEntry => e
+      rescue => e
         self.result = {error: e.message}
       end
     end
