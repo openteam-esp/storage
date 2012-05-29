@@ -4,7 +4,7 @@ module ElFinder
     class Arguments < Command::Arguments
       attr_accessor :target, :name
       validates_presence_of :target, :name
-      validates :entry, :is_a_directory => true
+      validates :entry, :has => {:type => :directory}
     end
 
     class Result < Command::Result

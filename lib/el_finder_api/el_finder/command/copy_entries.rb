@@ -6,8 +6,8 @@ module ElFinder
       attr_accessor :targets, :src, :dst, :cut
       validates_presence_of :src, :dst, :targets
 
-      validates :source, :destination, :is_a_directory => true
-      validates :entries, :is_an_entry => true
+      validates :source, :destination, :has => {:type => :directory}
+      validates :entries, :has => {:type => :entry}
 
       def cut?
         cut == '1' || cut == 'true' || cut == true

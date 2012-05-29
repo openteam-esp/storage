@@ -1,20 +1,20 @@
 module ElFinder
 
-  class ::IsAFileValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      record.errors[attribute] << "must be an instance of ElFinder::File (was #{value.class})" unless value.is_a?(ElFinder::File)
-    end
+  def validate_instance_of(record, attribute, values, klass)
   end
 
-  class ::IsADirectoryValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      record.errors[attribute] << "must be an instance of ElFinder::Directory (was #{value.class})" unless value.is_a?(ElFinder::Directory) || value.is_a?(ElFinder::Root)
+  class ::HasValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, values)
+      [*values].each do |value|
+        unless value.is_a?(klass)
+          record.errors[attribute] << "target must be #{options[:type]} (was #{value.class.to_s.demodulize.underscore})"
+        end
+      end
+      nil
     end
-  end
 
-  class ::IsAnEntryValidator < ActiveModel::EachValidator
-    def validate_each(record, attribute, value)
-      record.errors[attribute] << "must be an instance of ElFinder::Entry (was #{value.class})" unless value.is_a?(ElFinder::Entry)
+    def klass
+      "el_finder/#{options[:type]}".classify.constantize
     end
   end
 
@@ -52,6 +52,7 @@ module ElFinder
 
     def run
       begin
+        raise "Invalid parameters. #{arguments.errors.messages}" unless arguments.valid?
         self.result = "#{self.class.name}::Result".constantize.new(:arguments => arguments, :execute_command => execute_command, :command => self)
       rescue => e
         self.result = {error: e.message}

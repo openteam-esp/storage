@@ -7,7 +7,7 @@ module ElFinder
       attr_accessor :init, :target, :tree
 
       validates_presence_of :init, :unless => :target
-      validates :entry, :is_a_directory => true
+      validates :entry, :has => {:type => :directory}
 
       def initialize(params)
         super(params)
