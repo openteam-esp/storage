@@ -72,7 +72,7 @@ class FileEntry < Entry
       internal_locks.where(:entry_id => entry_ids_to_remove).destroy_all
 
       entry_ids_to_add.each do |id|
-        internal_locks.create! :entry_id => id
+        internal_locks.create :entry_id => id
       end
     end
 
