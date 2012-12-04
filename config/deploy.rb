@@ -41,7 +41,7 @@ after "deploy", "deploy:copy_unicorn_config"
 after "deploy", "deploy:files"
 after "deploy", "deploy:reload_servers"
 after "deploy:restart", "deploy:cleanup"
-#after "deploy", "deploy:airbrake"
+after "deploy", "deploy:airbrake"
 
 # deploy:rollback
 after "deploy:rollback", "deploy:reload_servers"
