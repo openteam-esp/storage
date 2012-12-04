@@ -5,12 +5,14 @@ application = config['deploy']["application"]
 raise "not found deploy.application key in settings.yml. see settings.yml.example" unless application
 domain = config['deploy']["domain"]
 raise "not found deploy.domain key in settings.yml. see settings.yml.example" unless domain
-port = config['deploy']["port"]
-raise "not found deploy.port key in settings.yml. see settings.yml.example" unless port
+gateway = config['deploy']["gateway"]
+raise "not found deploy.gateway key in settings.yml. see settings.yml.example" unless gateway
 
 set :application, application
 set :domain, domain
-set :port, port
+set :gateway, gateway
+
+set :ssh_options, { :forward_agent => true }
 
 set :rails_env, "production"
 set :deploy_to, "/srv/#{application}"
