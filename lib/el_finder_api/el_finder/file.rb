@@ -12,7 +12,7 @@ class ElFinder::File < ElFinder::Entry
   end
 
   def tmb
-    entry.resized_image_url width: 48, height: 48
+    entry.url width: 48, height: 48
   end
 
   def attributes

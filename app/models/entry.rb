@@ -33,7 +33,7 @@ class Entry < ActiveRecord::Base
     false
   end
 
-  protected
+  private
 
     def copy_descendants_to(entry)
     end
@@ -56,7 +56,6 @@ class Entry < ActiveRecord::Base
       raise Exceptions::LockedEntry.new("#{full_path} locked by " + subtree_external_locks_by_path.join('<br/>')) if subtree_external_locks_by_path.any?
     end
 
-  private
     def subtree_locks
       @subtree_locks ||= Lock.where(:entry_id => subtree_ids).where(['(file_entry_id is null) or (file_entry_id not in (?))', subtree_ids])
     end

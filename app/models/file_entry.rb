@@ -41,23 +41,13 @@ class FileEntry < Entry
     image? && file_width? && file_height?
   end
 
-  def url
-    if resizable?
-      resized_image_url width: file_width, height: file_height
-    else
-      url_for :file
-    end
-  end
-
-  def resized_image_url(params={})
-    url_for :resized_image, params
+  def url(options={})
+    options.merge!(id: id, name: name)
+    options.reverse_merge!(width: file_width, height: file_height) if resizable?
+    Settings['app.url'] + Rails.application.routes.url_helpers.send("files_path", options)
   end
 
   protected
-    def url_for(helper, options={})
-      Settings['app.url'] + Rails.application.routes.url_helpers.send("#{helper}s_path", options.merge(id: id, name: name))
-    end
-
     def set_file_mime_directory
       self.file_mime_directory = file_mime_type.split('/')[0]
     end
