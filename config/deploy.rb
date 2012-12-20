@@ -1,7 +1,7 @@
 require "bundler/capistrano"
 require "rvm/capistrano"
+require 'capistrano/ext/multistage'
 
-load "config/deploy/settings"
 load "config/deploy/assets"
 
 namespace :deploy do

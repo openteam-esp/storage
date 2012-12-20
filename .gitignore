@@ -4,6 +4,9 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile ~/.gitignore_global
 
+*.pid
+*.sql
+*.swp
 /.bundle
 /.files
 /bin
@@ -12,4 +15,5 @@
 /tmp
 /config/settings.yml
 /config/database.yml
+/config/deploy.yml
 /public/assets/

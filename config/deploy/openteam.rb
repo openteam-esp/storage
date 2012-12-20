@@ -1,12 +1,16 @@
-settings_yml_path = "config/settings.yml"
+# OPENTEAM-specific deployment configuration
+
+settings_yml_path = "config/deploy.yml"
 config = YAML::load(File.open(settings_yml_path))
 raise "not found deploy key in settings.yml. see settings.yml.example" unless config['deploy']
-application = config['deploy']["application"]
+application = config['deploy']['openteam']["application"]
 raise "not found deploy.application key in settings.yml. see settings.yml.example" unless application
-domain = config['deploy']["domain"]
+domain = config['deploy']['openteam']["domain"]
 raise "not found deploy.domain key in settings.yml. see settings.yml.example" unless domain
-gateway = config['deploy']["gateway"]
+gateway = config['deploy']['openteam']["gateway"]
 raise "not found deploy.gateway key in settings.yml. see settings.yml.example" unless gateway
+
+set :stages, %w(tusur openteam)
 
 set :application, application
 set :domain, domain
