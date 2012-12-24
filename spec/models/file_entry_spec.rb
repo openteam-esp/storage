@@ -50,6 +50,7 @@ describe FileEntry do
   end
 
   context 'with internal locks' do
+    before { Settings['app.url'] = 'http://localhost:3001'}
     before { file(:parent => directory) }
     let(:subdirectory) { Fabricate :directory_entry, :parent => another_directory}
     let(:create_another_file)  { another_file(:file => File.new("#{Rails.root}/spec/fixtures/content_with_link_to_file.xhtml"), :parent => subdirectory) }

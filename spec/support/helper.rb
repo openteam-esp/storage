@@ -47,4 +47,8 @@ module Helper
     @el_file ||= ElFinder::File.new :root => el_root, :entry => file(options)
   end
 
+  def el_image
+    @el_image ||= ElFinder::File.new :root => el_root, :entry => file(:file => File.new("#{Rails.root}/spec/fixtures/picture.txt"))
+  end
+
 end
