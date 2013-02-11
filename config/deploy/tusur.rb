@@ -24,7 +24,7 @@ set :use_sudo, false
 set :unicorn_instance_name, "unicorn"
 
 set :scm, :git
-set :repository, "https://github.com/openteam-esp/storage.git"
+set :repository, "git://github.com/openteam-esp/storage.git"
 set :branch, "master"
 set :deploy_via, :remote_cache
 
