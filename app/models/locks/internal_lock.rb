@@ -1,4 +1,6 @@
 class InternalLock < Lock
+  attr_accessible :entry_id
+
   belongs_to :file_entry
   validates_presence_of :file_entry
   validates_uniqueness_of :file_entry_id, :scope => :entry_id

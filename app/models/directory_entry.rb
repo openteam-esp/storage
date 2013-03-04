@@ -11,7 +11,11 @@ class DirectoryEntry < Entry
 
   def find_or_create_by_path(path)
     path.to_s.split('/').inject(self) { | entry, name |
-      entry.directories.find_by_name(name) || DirectoryEntry.create!(:parent => entry, :name => name)
+      entry.directories.find_by_name(name) ||
+        DirectoryEntry.create! do |dir|
+          dir.parent = entry
+          dir.name = name
+        end
     }
   end
 
@@ -23,7 +27,8 @@ class DirectoryEntry < Entry
     def copy_descendants_to(entry)
       self.children.each do |child|
         child_copy = child.dup
-        child_copy.update_attributes! :parent => entry
+        child_copy.parent = entry
+        child_copy.save!
         child.copy_descendants_to(child_copy)
       end
     end

@@ -35,7 +35,7 @@ describe FileEntry do
       its(:name) { should == 'file copy1.txt'}
 
       context 'when file name have no extention' do
-        before { file.update_attributes!(:name => 'file')}
+        before { file.update_attributes!({ :name => 'file' }, :without_protection => true)}
 
         its(:name) { should == 'file copy1'}
       end
@@ -61,11 +61,11 @@ describe FileEntry do
     its('locks.count') { should == 1 }
 
     specify { expect{file.destroy}.should raise_error }
-    specify { expect{file.update_attributes! :name => 'new.txt'}.should raise_error }
+    specify { expect{file.update_attributes!({ :name => 'new.txt' }, :without_protection => true)}.should raise_error }
     specify { expect{directory.destroy}.should raise_error }
 
     specify { expect{another_file.destroy}.should_not raise_error }
-    specify { expect{another_file.update_attributes! :name => 'new.txt'}.should_not raise_error }
+    specify { expect{another_file.update_attributes!({ :name => 'new.txt'}, :without_protection => true)}.should_not raise_error }
     specify { expect{another_directory.destroy}.should_not raise_error }
 
     specify { expect{file.update_file_content('absolutely new content')}.should_not raise_error }

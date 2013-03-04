@@ -1,5 +1,7 @@
 class Entry < ActiveRecord::Base
 
+  attr_accessible
+
   before_destroy :ensure_has_no_subtree_locks, :unless => :ancestry_callbacks_disabled?
 
   before_update :ensure_has_no_subtree_locks, :if => :name_changed?, :unless => :ancestry_callbacks_disabled?
@@ -19,7 +21,7 @@ class Entry < ActiveRecord::Base
   def duplicate
     Entry.transaction do
       dup.tap do | entry |
-        entry.update_attributes! :name => entry.duplicate_name
+        entry.update_attributes!({ :name => entry.duplicate_name }, :without_protection => true)
         copy_descendants_to(entry)
       end
     end

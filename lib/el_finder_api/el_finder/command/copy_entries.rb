@@ -36,7 +36,8 @@ module ElFinder
         arguments.entries.map do | el_entry |
           entry = arguments.cut? ? el_entry.entry : el_entry.entry.dup
           entry.tap do | entry |
-            entry.update_attributes! :parent => arguments.destination.entry
+            entry.parent = arguments.destination.entry
+            entry.save!
           end
         end
       end

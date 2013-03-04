@@ -15,7 +15,10 @@ module ElFinder
 
     protected
       def execute_command
-        DirectoryEntry.create!(:parent => arguments.entry.entry, :name => arguments.name)
+        DirectoryEntry.create! do |dir|
+          dir.parent = arguments.entry.entry
+          dir.name = arguments.name
+        end
       end
   end
 end

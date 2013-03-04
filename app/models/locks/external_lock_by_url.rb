@@ -1,4 +1,6 @@
 class ExternalLockByUrl < ExternalLock
+  attr_accessible :entry_url, :external_url
+
   validates_presence_of :entry_url
 
   protected

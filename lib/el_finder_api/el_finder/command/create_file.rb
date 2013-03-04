@@ -15,8 +15,9 @@ module ElFinder
     end
 
     def execute_command
-      FileEntry.new(:parent => arguments.entry.entry).tap do | file |
+      FileEntry.new.tap do | file |
         Dir.mktmpdir do |dir|
+          file.parent = arguments.entry.entry
           file.file = ::File.open("#{dir}/#{arguments.name}", "w")
           file.save!
         end

@@ -20,7 +20,8 @@ module ElFinder
     protected
       def execute_command
         arguments.entry.entry.tap do | entry |
-          entry.update_attributes! :name => arguments.name
+          entry.name = arguments.name
+          entry.save!
         end
       end
   end

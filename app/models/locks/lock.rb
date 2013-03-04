@@ -1,4 +1,5 @@
 class Lock < ActiveRecord::Base
+  attr_accessible
   belongs_to :entry
   validates_presence_of :entry
 end
