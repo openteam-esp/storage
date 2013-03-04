@@ -1,4 +1,4 @@
-source :rubygems
+source 'http://rubygems.org'
 
 group :assets do
   gem 'sass-rails'
@@ -19,6 +19,7 @@ end
 
 group :development do
   gem 'annotate',     '>= 2.4.1.beta1', :require => false
+  gem 'brakeman'
   gem 'rvm-capistrano'
 end
 
