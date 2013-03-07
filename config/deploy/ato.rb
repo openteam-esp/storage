@@ -96,7 +96,7 @@ namespace :subscriber do
 end
 
 # stop subscribers
-before "deploy", "subscriber:stop"
+# before "deploy", "subscriber:stop"
 
 # deploy
 after "deploy:finalize_update", "deploy:config_app"
@@ -104,7 +104,7 @@ after "deploy", "deploy:migrate"
 after "deploy", "deploy:copy_unicorn_config"
 after "deploy", "deploy:files"
 after "deploy", "unicorn:reload"
-after "deploy", "subscriber:start"
+# after "deploy", "subscriber:start"
 after "deploy:restart", "deploy:cleanup"
 after "deploy", "deploy:airbrake"
 

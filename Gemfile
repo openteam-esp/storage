@@ -2,7 +2,6 @@ source 'http://rubygems.org'
 
 group :assets do
   gem 'sass-rails'
-  gem 'therubyracer'                                                        unless RUBY_PLATFORM =~ /freebsd/
   gem 'uglifier'
 end
 
@@ -24,7 +23,6 @@ group :development do
 end
 
 group :production do
-  gem 'fog',                            :require => false                   unless RUBY_PLATFORM =~ /freebsd/
   gem 'pg',                             :require => false
 end
 
