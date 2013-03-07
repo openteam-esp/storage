@@ -1,19 +1,15 @@
 settings_yml_path = "config/deploy.yml"
 config = YAML::load(File.open(settings_yml_path))
 raise "not found deploy key in deploy.yml. see deploy.yml.example" unless config['deploy']
-application = config['deploy']['openteam']["application"]
+application = config['deploy']['ato']["application"]
 raise "not found deploy.application key in deploy.yml. see deploy.yml.example" unless application
-domain = config['deploy']['openteam']["domain"]
+domain = config['deploy']['ato']["domain"]
 raise "not found deploy.domain key in deploy.yml. see deploy.yml.example" unless domain
-gateway = config['deploy']['openteam']["gateway"]
-raise "not found deploy.gateway key in deploy.yml. see deploy.yml.example" unless gateway
 
 set :application, application
 set :domain, domain
-set :gateway, gateway
 
 set :ssh_options, { :forward_agent => true }
-set :default_shell, "bash -l"
 
 set :rails_env, "production"
 set :deploy_to, "/srv/#{application}"
@@ -56,13 +52,34 @@ namespace :deploy do
 
   desc "Reload Unicorn"
   task :reload_servers do
-    sudo "/etc/init.d/nginx reload"
-    sudo "/etc/init.d/#{unicorn_instance_name} restart"
+    run "/usr/local/etc/rc.d/#{unicorn_instance_name} restart"
   end
 
   desc "Airbrake notify"
   task :airbrake do
     run "cd #{deploy_to}/current && RAILS_ENV=production TO=production bin/rake airbrake:deploy"
+  end
+end
+
+namespace :unicorn do
+  desc "Start Unicorn"
+  task :start do
+    run "/usr/local/etc/rc.d/unicorn start"
+  end
+
+  desc "Stop Unicorn"
+  task :stop do
+    run "/usr/local/etc/rc.d/unicorn stop"
+  end
+
+  desc "Reload Unicorn"
+  task :reload do
+    run "/usr/local/etc/rc.d/unicorn reload"
+  end
+
+  desc "Restart Unicorn"
+  task :restart do
+    run "/usr/local/etc/rc.d/unicorn restart"
   end
 end
 
@@ -86,10 +103,11 @@ after "deploy:finalize_update", "deploy:config_app"
 after "deploy", "deploy:migrate"
 after "deploy", "deploy:copy_unicorn_config"
 after "deploy", "deploy:files"
-after "deploy", "deploy:reload_servers"
+after "deploy", "unicorn:reload"
 after "deploy", "subscriber:start"
 after "deploy:restart", "deploy:cleanup"
 after "deploy", "deploy:airbrake"
 
 # deploy:rollback
-after "deploy:rollback", "deploy:reload_servers"
+after "deploy:rollback", "unicorn:restart"
+after "deploy:rollback", "subscriber:start"
