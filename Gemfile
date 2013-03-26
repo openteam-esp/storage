@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 group :assets do
   gem 'sass-rails'
   gem 'uglifier'
+  gem 'turbo-sprockets-rails3'
 end
 
 group :default do
@@ -10,16 +11,17 @@ group :default do
   gem 'bunny',                          :require => false
   gem 'dragonfly'
   gem 'esp-commons'
-  gem 'inherited_resources'
   gem 'jquery-rails'
   gem 'rails',                          :require => false
   gem 'russian'
 end
 
 group :development do
-  gem 'annotate',     '>= 2.4.1.beta1', :require => false
-  gem 'brakeman'
-  gem 'rvm-capistrano'
+  gem 'brakeman',                       :require => false
+  gem 'annotate',                       :require => false
+  gem 'capistrano-db-tasks', :git => 'git://github.com/openteam/capistrano-db-tasks'
+  gem 'capistrano-unicorn',  :git => 'git://github.com/sosedoff/capistrano-unicorn'
+  gem 'openteam-capistrano'
 end
 
 group :production do
@@ -28,13 +30,7 @@ end
 
 group :test do
   gem 'fabrication',                    :require => false
-  gem 'guard-rspec',                    :require => false
-  gem 'guard-spork',                    :require => false
-  gem 'libnotify'
-  gem 'moqueue',                        :require => false
-  gem 'rb-inotify'
   gem 'rspec-rails',                    :require => false
-  gem 'spork',                          :require => false
   gem 'sqlite3',                        :require => false
   gem 'shoulda-matchers',               :require => false
 end

@@ -132,7 +132,6 @@ describe FileEntry do
     describe '#update' do
       context 'when file content changed' do
         before { MessageMaker.should_receive(:make_message).with('esp.storage.cms', 'update_content', file.full_path) }
-        before { MessageMaker.should_receive(:make_message).with('esp.storage.blue-pages', 'update_content', file.full_path) }
 
         specify { file.update_file_content '0123456789' }
       end
