@@ -47,6 +47,17 @@ class FileEntry < Entry
     Settings['app.url'] + Rails.application.routes.url_helpers.send("files_path", options)
   end
 
+  def subfile(relative_path)
+    if relative_path.any?
+      folder = parent.directories.find_by_name!(file_basename)
+      file_name = relative_path.pop
+      folder = folder.directories.find_by_name!(relative_path.shift) while relative_path.any?
+      folder.files.find_by_name! file_name
+    else
+      self
+    end
+  end
+
   protected
     def set_file_mime_directory
       self.file_mime_directory = file_mime_type.split('/')[0]

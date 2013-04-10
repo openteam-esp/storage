@@ -13,7 +13,9 @@ DEFAULT_ENDPOINT = Dragonfly[:files].endpoint { |params, app|
     modificator = '#' if params[:cropify]
     image.file.thumb("#{width}x#{height}#{modificator}#{gravity}")
   else
-    app.fetch(FileEntry.where(:name => params[:name]).find(params[:id]).file_uid)
+    base_entry_name, *relative_path = params[:name].split('/')
+    base_entry = FileEntry.where(:name => base_entry_name).find(params[:id])
+    app.fetch base_entry.subfile(relative_path).file_uid
   end
 }
 
