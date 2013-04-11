@@ -10,6 +10,7 @@ class DirectoryEntry < Entry
   end
 
   def find_or_create_by_path(path)
+    path = '' if path == '.'
     path.to_s.split('/').inject(self) { | entry, name |
       entry.directories.find_by_name(name) ||
         DirectoryEntry.create! do |dir|

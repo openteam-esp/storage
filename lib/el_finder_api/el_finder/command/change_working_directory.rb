@@ -16,6 +16,17 @@ module ElFinder
     end
 
     class Result < Command::Result
+      UNPACKABLE_MIME_TYPES = [
+        'application/x-tar',
+        'application/x-bzip2',
+        'application/x-gzip',
+        'application/x-xz',
+        'application/x-compress',
+        'application/zip',
+      ]
+
+      PACKABLE_MIME_TYPES = []
+
       def cwd;        arguments.entry.entry end
       def api;        2                     end
       def uplMaxSize; '16m'                 end
@@ -31,7 +42,16 @@ module ElFinder
       end
 
       def options
-        {disabled: [], separator: '/', copyOverwrite: 1, archivers: {create: [], extract: []}, path: arguments.entry.full_path}
+        {
+          archivers: {
+            create: PACKABLE_MIME_TYPES,
+            extract: UNPACKABLE_MIME_TYPES,
+          },
+          copyOverwrite: 1,
+          disabled: [],
+          path: arguments.entry.full_path,
+          separator: '/',
+        }
       end
 
       def attributes

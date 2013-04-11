@@ -1,4 +1,6 @@
 class FileEntry < Entry
+  attr_accessible :file
+
   validates_presence_of :name, :parent, :file
 
   alias_attribute :file_name, :name
@@ -27,6 +29,7 @@ class FileEntry < Entry
   end
 
   def update_file_content(content)
+    require 'tmpdir'
     Dir.mktmpdir do |dir|
       File.open("#{dir}/#{name}", 'w') do |file|
         file.write(content)
@@ -49,13 +52,33 @@ class FileEntry < Entry
 
   def subfile(relative_path)
     if relative_path.any?
-      folder = parent.directories.find_by_name!(file_basename)
       file_name = relative_path.pop
+      folder = unpack
       folder = folder.directories.find_by_name!(relative_path.shift) while relative_path.any?
       folder.files.find_by_name! file_name
     else
       self
     end
+  end
+
+  def unpack
+    unpacked_directory = parent.directories.find_by_name(file_basename)
+    if !unpacked_directory
+      transaction do
+        unpacked_directory = parent.directories.create!(:name => file_basename)
+        require 'archive'
+        Archive.new(file.file, nil).each do |entry, data|
+          next if entry.path =~ %r{/$} # skip dirs
+          folder = unpacked_directory.find_or_create_by_path(File.dirname(entry.path))
+          folder.files.new.tap do |file_entry|
+            file_entry.file = data
+            file_entry.name = File.basename(entry.path)
+            file_entry.save!
+          end
+        end
+      end
+    end
+    unpacked_directory
   end
 
   protected

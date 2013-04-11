@@ -1,6 +1,6 @@
 class Entry < ActiveRecord::Base
 
-  attr_accessible
+  attr_accessible :name
 
   before_destroy :ensure_has_no_subtree_locks, :unless => :ancestry_callbacks_disabled?
 
