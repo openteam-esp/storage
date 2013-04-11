@@ -13,13 +13,14 @@ group :default do
   gem 'esp-commons'
   gem 'jquery-rails'
   gem 'rails',                          :require => false
+  gem 'rubyzip',                        :require => false
   gem 'russian'
 end
 
 group :development do
   gem 'annotate',                       :require => false
   gem 'brakeman',                       :require => false
-  gem 'capistrano-db-tasks', :git => 'git://github.com/sgruhier/capistrano-db-tasks'
+  gem 'capistrano-db-tasks',            :git => 'git://github.com/sgruhier/capistrano-db-tasks'
   gem 'capistrano-unicorn'
   gem 'openteam-capistrano'
 end
