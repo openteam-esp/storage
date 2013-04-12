@@ -113,7 +113,7 @@ GEM
     json (1.7.7)
     json_pure (1.7.7)
     kgio (2.8.0)
-    libarchive-ruby (0.0.3)
+    libarchive (0.1.2)
     mail (2.5.3)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -236,7 +236,7 @@ DEPENDENCIES
   esp-commons
   fabrication
   jquery-rails
-  libarchive-ruby
+  libarchive
   openteam-capistrano
   pg
   rails
