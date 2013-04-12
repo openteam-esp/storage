@@ -65,18 +65,19 @@ class FileEntry < Entry
     unpacked_directory = parent.directories.find_by_name(file_basename)
     if !unpacked_directory
       transaction do
-        require 'libarchive'
+        require 'archive'
+        require 'tmpdir'
 
         unpacked_directory = parent.directories.create!(:name => file_basename)
 
-        Archive.read_open_filename(file.file.path) do |archive|
-          while entry = archive.next_header
-            next if entry.pathname.ends_with?('/') # skip dirs
-            folder = unpacked_directory.find_or_create_by_path(File.dirname(entry.pathname))
-            folder.files.new.tap do |file_entry|
-              file_entry.file = archive.read_data
-              file_entry.name = File.basename(entry.pathname)
-              file_entry.save!
+        Dir.mktmpdir do |dir|
+          Dir.chdir(dir)  do
+            Archive.new(file.file, nil).extract
+            Dir.glob("**/*").each do |filepath|
+              if File.file?(filepath)
+                folder = unpacked_directory.find_or_create_by_path(File.dirname(filepath))
+                folder.files.create! :file => File.new(filepath)
+              end
             end
           end
         end
