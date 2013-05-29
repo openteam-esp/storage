@@ -23,6 +23,13 @@ Storage::Application.routes.draw do
   match 'api/el_finder/v2' => 'el_finder/commands#create'
   match 'api/el_finder/v2/*root_path' => 'el_finder/commands#create'
 
+  get '/files/:id/region/:width/:height/:x/:y/*name' => Dragonfly[:files].endpoint { |params, app|
+    image = FileEntry.where(:file_mime_directory => 'image').where(:name => params[:name]).find(params[:id])
+    width, height = params[:width], params[:height]
+    x, y = params[:x], params[:y]
+    image.file.thumb("#{width}x#{height}+#{x}+#{y}")
+  }, :format => false
+
   get '/files/:id/(:width-:height(:cropify)(:magnify)(:gravity))/*name' => DEFAULT_ENDPOINT,
     :constraints => {
       :width => /\d+/,
