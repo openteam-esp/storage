@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 group :assets do
   gem 'sass-rails'
   gem 'uglifier'
-#  gem 'turbo-sprockets-rails3'
+  gem 'turbo-sprockets-rails3'
 end
 
 group :default do
