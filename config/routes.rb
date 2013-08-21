@@ -11,7 +11,7 @@ DEFAULT_ENDPOINT = Dragonfly[:files].endpoint { |params, app|
     end
     gravity = params[:gravity] if params[:cropify]
     modificator = '#' if params[:cropify]
-    image.file.thumb("#{width}x#{height}#{modificator}#{gravity}")
+    image.file.thumb("#{width}x#{height}#{modificator}#{gravity}").strip
   else
     base_entry_name, *relative_path = params[:name].split('/')
     base_entry = FileEntry.where(:name => base_entry_name).find(params[:id])
@@ -28,7 +28,7 @@ Storage::Application.routes.draw do
     width, height = params[:width], params[:height]
     x, y = params[:x], params[:y]
     resized_width, resized_height = params[:resized_width], params[:resized_height]
-    thumbnail = image.file.thumb("#{width}x#{height}+#{x}+#{y}")
+    thumbnail = image.file.thumb("#{width}x#{height}+#{x}+#{y}").strip
     thumbnail = thumbnail.thumb("#{resized_width}x#{resized_height}") if resized_width && resized_height
     thumbnail
   }, :format => false
