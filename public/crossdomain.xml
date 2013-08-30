@@ -1,3 +1,4 @@
 <cross-domain-policy>
   <allow-access-from domain="*.tomsk.gov.ru" to-ports="80"/>
+  <allow-access-from domain="*.znaigorod.ru" to-ports="80"/>
 </cross-domain-policy>
