@@ -15,18 +15,19 @@ class InternalLock < Lock
       errors.add(:file_entry, "Cann't create link to self") if entry == file_entry
     end
 end
+
 # == Schema Information
 #
 # Table name: locks
 #
-#  id            :integer         not null, primary key
+#  id            :integer          not null, primary key
 #  type          :string(255)
 #  entry_id      :integer
 #  file_entry_id :integer
 #  entry_path    :string(255)
 #  entry_url     :string(255)
 #  external_url  :string(255)
-#  created_at    :datetime        not null
-#  updated_at    :datetime        not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 

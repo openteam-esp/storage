@@ -149,9 +149,9 @@ end
 #
 # Table name: entries
 #
-#  id                  :integer         not null, primary key
+#  id                  :integer          not null, primary key
 #  type                :string(255)
-#  name                :string(255)
+#  name                :text
 #  ancestry            :string(255)
 #  ancestry_depth      :integer
 #  file_uid            :string(255)
@@ -160,7 +160,7 @@ end
 #  file_height         :integer
 #  file_mime_type      :string(255)
 #  file_mime_directory :string(255)
-#  created_at          :datetime
-#  updated_at          :datetime
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
 #
 

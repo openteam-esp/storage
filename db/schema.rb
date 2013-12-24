@@ -11,11 +11,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130411100025) do
+ActiveRecord::Schema.define(:version => 20131224084102) do
 
   create_table "entries", :force => true do |t|
     t.string   "type"
-    t.string   "name"
+    t.text     "name"
     t.string   "ancestry"
     t.integer  "ancestry_depth"
     t.string   "file_uid"
