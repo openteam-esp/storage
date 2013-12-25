@@ -21,7 +21,7 @@ group :development do
   gem 'annotate',                       :require => false
   gem 'brakeman',                       :require => false
   gem 'capistrano-db-tasks',            :git => 'git://github.com/sgruhier/capistrano-db-tasks'
-  gem 'capistrano-unicorn'
+  gem 'capistrano-unicorn', '~> 0.1.7', :require => false
   gem 'openteam-capistrano'
 end
 
