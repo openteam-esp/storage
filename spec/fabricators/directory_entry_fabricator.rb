@@ -12,7 +12,7 @@ end
 #  name                :text
 #  ancestry            :string(255)
 #  ancestry_depth      :integer
-#  file_uid            :string(255)
+#  file_uid            :text
 #  file_size           :integer
 #  file_width          :integer
 #  file_height         :integer
