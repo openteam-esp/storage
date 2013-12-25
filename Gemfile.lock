@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/sgruhier/capistrano-db-tasks
-  revision: 229c2a63ebb43a61ed2aa1f042d4d447ee186037
+  revision: 00e9aa54b20023a7832e9e38a4070c50660b96ce
   specs:
     capistrano-db-tasks (0.2)
 
