@@ -12,9 +12,8 @@ group :default do
   gem 'dragonfly'
   gem 'esp-commons'
   gem 'jquery-rails'
-  gem 'libarchive-ruby',                :require => false
-  gem 'rack-utf8_sanitizer'
   gem 'rails',                          :require => false
+  gem 'libarchive-ruby',                :require => false
   gem 'russian'
 end
 
