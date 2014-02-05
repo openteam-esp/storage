@@ -56,6 +56,8 @@ module Storage
     # Raise exception on mass assignment protection for Active Record models
     config.active_record.mass_assignment_sanitizer = :strict
 
+    config.middleware.insert_before "Rack::Runtime", Rack::UTF8Sanitizer
+
     config.generators do |generators|
       generators.test_framework       :rspec, :fixture => true
       generators.fixture_replacement  :fabrication
