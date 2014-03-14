@@ -15,7 +15,9 @@ DEFAULT_ENDPOINT = Dragonfly[:files].endpoint { |params, app|
     modificator = '#' if params[:cropify]
 
     thumbnail = image.file.thumb("#{width}x#{height}#{modificator}#{gravity}").strip
-    #thumbnail.process(:watermark)
+    thumbnail = thumbnail.process(:watermark) if Settings['watermark']
+
+    thumbnail
   else
     base_entry_name, *relative_path = params[:name].split('/')
     base_entry = FileEntry.where(:name => base_entry_name).find(params[:id])
@@ -31,7 +33,7 @@ REGION_ENDPOINT = Dragonfly[:files].endpoint do |params, app|
   resized_width, resized_height = params[:resized_width], params[:resized_height]
 
   thumbnail = image.file.thumb("#{width}x#{height}+#{x}+#{y}").strip
-  #thumbnail = thumbnail.process(:watermark)
+  thumbnail = thumbnail.process(:watermark) if Settings['watermark']
   thumbnail = thumbnail.thumb("#{resized_width}x#{resized_height}") if resized_width && resized_height
 
   thumbnail

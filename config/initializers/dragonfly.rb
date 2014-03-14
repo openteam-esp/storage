@@ -33,12 +33,13 @@ module Dragonfly
   end
 end
 
+# Before usage set watermark.file in config/settings.yml
 class Watermark
   include Dragonfly::Configurable
   include Dragonfly::ImageMagick::Utils
 
   def watermark(source_image)
-    watermark_file = Rails.root.join('public', 'logotype.png')
+    watermark_file = Rails.root.join(Settings['watermark.file'])
     watermark_resize = '30%'
     watermark_opacity = '90'
 
@@ -49,17 +50,19 @@ class Watermark
   end
 end
 
-class TextWatermark
-  include Dragonfly::Configurable
-  include Dragonfly::ImageMagick::Utils
-
-  def text_watermark(source_image)
-    convert(
-      source_image,
-      "-fill white -undercolor '#00000080' -gravity SouthEast -annotate +1+1 'http://znaigorod.ru'"
-    )
-  end
-end
-
 app.processor.register(Watermark)
-app.processor.register(TextWatermark)
+
+# Uncomment for text watermark
+# Before usage set watermark.text in config/settings.yml
+#class TextWatermark
+  #include Dragonfly::Configurable
+  #include Dragonfly::ImageMagick::Utils
+
+  #def text_watermark(source_image)
+    #convert(
+      #source_image,
+      #"-fill white -undercolor '#00000080' -gravity SouthEast -annotate +1+1 '#{Settings['watermark.text']}'"
+    #)
+  #end
+#end
+# app.processor.register(TextWatermark)
