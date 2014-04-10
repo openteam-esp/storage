@@ -5,25 +5,29 @@ Storage::Application.routes.draw do
   match 'api/el_finder/v2/*root_path' => 'el_finder/commands#create'
 
   # get image's region without watermark
-  get '/files/:id/region/:width/:height/:x/:y/(:resized_width-:resized_height)/*name' => Endpoints.region,
+  get '/files/:id/region/:width/:height/:x/:y/(:resized_width-:resized_height)(:cropify)(:gravity)/*name' => Endpoints.region,
     :defaults => { :watermark => true },
     :constraints => { :width => /\d+/,
                       :height => /\d+/,
                       :x => /\d+/,
                       :y => /\d+/,
                       :resized_width => /\d+/,
-                      :resized_height => /\d+/ },
+                      :resized_height => /\d+/,
+                      :cropify => /(\!|c)/,
+                      :gravity => /(e|ne|n|nw|se|s|sw|w)/ },
     :format => false
 
   # get image's region with watermark
-  get '/w/files/:id/region/:width/:height/:x/:y/(:resized_width-:resized_height)/*name' => Endpoints.region { |thumbnail| Settings['watermark'] ? thumbnail.process(:watermark) : thumbnail },
+  get '/w/files/:id/region/:width/:height/:x/:y/(:resized_width-:resized_height)(:cropify)(:gravity)/*name' => Endpoints.region { |thumbnail| Settings['watermark'] ? thumbnail.process(:watermark) : thumbnail },
     :defaults => { :watermark => true },
     :constraints => { :width => /\d+/,
                       :height => /\d+/,
                       :x => /\d+/,
                       :y => /\d+/,
                       :resized_width => /\d+/,
-                      :resized_height => /\d+/ },
+                      :resized_height => /\d+/,
+                      :cropify => /(\!|c)/,
+                      :gravity => /(e|ne|n|nw|se|s|sw|w)/ },
     :format => false
 
   # get images without watermark by default

@@ -37,11 +37,14 @@ class Endpoints
       x, y                          = params[:x], params[:y]
       resized_width, resized_height = params[:resized_width], params[:resized_height]
 
+      gravity = params[:gravity] if params[:cropify]
+      modificator = '#' if params[:cropify]
+
       thumbnail = image.file.thumb("#{width}x#{height}+#{x}+#{y}").strip
 
-      thumbnail = block.call(thumbnail) if block
+      thumbnail = thumbnail.thumb("#{resized_width}x#{resized_height}#{modificator}#{gravity}") if resized_width && resized_height
 
-      thumbnail = thumbnail.thumb("#{resized_width}x#{resized_height}") if resized_width && resized_height
+      thumbnail = block.call(thumbnail) if block
 
       thumbnail
     end
