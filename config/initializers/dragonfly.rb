@@ -39,9 +39,14 @@ class Watermark
   include Dragonfly::ImageMagick::Utils
 
   def watermark(source_image)
+    image_properties = identify(source_image)
+
+    width, height = image_properties[:width], image_properties[:height]
+    watermark_width, watermark_height = width / 4, height / 4
+
     watermark_file = Rails.root.join(Settings['watermark.file'])
-    watermark_resize = '30%'
-    watermark_opacity = '90'
+    watermark_resize = "#{watermark_width}x#{watermark_height}"
+    watermark_opacity = '50'
 
     convert(
       source_image,

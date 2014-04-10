@@ -31,7 +31,6 @@ class Endpoints
 
   def self.region(&block)
     Dragonfly[:files].endpoint do |params, app|
-      p params
       image = FileEntry.where(:file_mime_directory => 'image').where(:name => params[:name]).find(params[:id])
 
       width, height                 = params[:width], params[:height]
