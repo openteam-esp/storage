@@ -4,8 +4,19 @@ Storage::Application.routes.draw do
   match 'api/el_finder/v2' => 'el_finder/commands#create'
   match 'api/el_finder/v2/*root_path' => 'el_finder/commands#create'
 
+  # get image's region without watermark
+  get '/files/:id/region/:width/:height/:x/:y/(:resized_width-:resized_height)/*name' => Endpoints.region,
+    :defaults => { :watermark => true },
+    :constraints => { :width => /\d+/,
+                      :height => /\d+/,
+                      :x => /\d+/,
+                      :y => /\d+/,
+                      :resized_width => /\d+/,
+                      :resized_height => /\d+/ },
+    :format => false
+
   # get image's region with watermark
-  get '/files/:id/region/:width/:height/:x/:y/(:resized_width-:resized_height)/*name' => Endpoints.region { |thumbnail| Settings['watermark'] ? thumbnail.process(:watermark) : thumbnail },
+  get '/w/files/:id/region/:width/:height/:x/:y/(:resized_width-:resized_height)/*name' => Endpoints.region { |thumbnail| Settings['watermark'] ? thumbnail.process(:watermark) : thumbnail },
     :defaults => { :watermark => true },
     :constraints => { :width => /\d+/,
                       :height => /\d+/,
@@ -15,19 +26,8 @@ Storage::Application.routes.draw do
                       :resized_height => /\d+/ },
     :format => false
 
-  # get image's region without watermark (o = original)
-  get '/o/files/:id/region/:width/:height/:x/:y/(:resized_width-:resized_height)/*name' => Endpoints.region,
-    :defaults => { :watermark => true },
-    :constraints => { :width => /\d+/,
-                      :height => /\d+/,
-                      :x => /\d+/,
-                      :y => /\d+/,
-                      :resized_width => /\d+/,
-                      :resized_height => /\d+/ },
-    :format => false
-
-  # get images with watermark by default
-  get '/files/:id/(:width-:height(:cropify)(:magnify)(:gravity))/*name' => Endpoints.default { |thumbnail| Settings['watermark'] ? thumbnail.process(:watermark) : thumbnail },
+  # get images without watermark by default
+  get '/files/:id/(:width-:height(:cropify)(:magnify)(:gravity))/*name' => Endpoints.default,
     :constraints => { :width => /\d+/,
                       :height => /\d+/,
                       :cropify => /(\!|c)/,
@@ -36,8 +36,8 @@ Storage::Application.routes.draw do
     :as => :files,
     :format => false
 
-  # get images without watermark (o = original)
-  get '/o/files/:id/(:width-:height(:cropify)(:magnify)(:gravity))/*name' => Endpoints.default,
+  # get images with watermark
+  get '/w/files/:id/(:width-:height(:cropify)(:magnify)(:gravity))/*name' => Endpoints.default { |thumbnail| Settings['watermark'] ? thumbnail.process(:watermark) : thumbnail },
     :constraints => { :width => /\d+/,
                       :height => /\d+/,
                       :cropify => /(\!|c)/,
