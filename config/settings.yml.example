@@ -6,3 +6,6 @@ errors:
   key:          KEY
   url:          http://errors.openteam.ru
 
+# Uncomment to use watermark
+#watermark:
+  #file:         public/logotype.png
