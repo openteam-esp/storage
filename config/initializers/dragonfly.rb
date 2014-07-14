@@ -25,7 +25,7 @@ module Dragonfly
   module ImageMagick
     module Utils
       def raw_identify(temp_object, args='')
-        throw :unable_to_handle if temp_object.original_filename =~ /.pdf/
+        throw :unable_to_handle if temp_object.original_filename.downcase =~ /.pdf/
 
         run(identify_command, "#{args} #{quote(temp_object.path)}")
       end
