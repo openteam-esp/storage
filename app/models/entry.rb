@@ -8,7 +8,7 @@ class Entry < ActiveRecord::Base
 
   before_save :ensure_has_no_subtree_external_locks_by_path, :if => :ancestry_changed?, :unless => [:new_record?, :ancestry_callbacks_disabled?]
 
-  validates_uniqueness_of :name, :scope => :ancestry
+  validate :uniq_name_with_ancestry
 
   has_many :locks
 
@@ -59,6 +59,14 @@ class Entry < ActiveRecord::Base
     end
 
   private
+
+    def uniq_name_with_ancestry
+      model = Entry.find(:first, :conditions => {:name => self.name, :ancestry => self.ancestry})
+      unless model.blank?
+        errors.add :name, "уже существует. url: #{model.url}"
+      end
+    end
+
     def subtree_locks
       @subtree_locks ||= Lock.where(:entry_id => subtree_ids).where(['(file_entry_id is null) or (file_entry_id not in (?))', subtree_ids])
     end
@@ -66,6 +74,7 @@ class Entry < ActiveRecord::Base
     def subtree_external_locks_by_path
       @subtree_external_locks_by_path = subtree_locks.where(:type => ExternalLockByPath)
     end
+
 end
 
 # == Schema Information
