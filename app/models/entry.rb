@@ -8,9 +8,7 @@ class Entry < ActiveRecord::Base
 
   before_save :ensure_has_no_subtree_external_locks_by_path, :if => :ancestry_changed?, :unless => [:new_record?, :ancestry_callbacks_disabled?]
 
-  validates_uniqueness_of :name, :scope => :ancestry
-
-  #validate :uniq_name_with_ancestry TODO fix this
+  validate :uniq_name_with_ancestry
 
   has_many :locks
 
@@ -62,7 +60,8 @@ class Entry < ActiveRecord::Base
 
   private
 
-    def uniq_name_with_ancestry # TODO fix this
+    def uniq_name_with_ancestry
+      return unless self.new_record?
       model = Entry.find(:first, :conditions => {:name => self.name, :ancestry => self.ancestry})
       unless model.blank?
         errors.add :name, "уже существует. url: #{model.url}"
