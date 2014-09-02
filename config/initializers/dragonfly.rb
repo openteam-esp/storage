@@ -1,11 +1,4 @@
 require 'dragonfly'
-require 'dragonfly/rails/images'
-
-path = `which convert`.strip.gsub('convert','').presence || "/usr/local/bin/"
-Dragonfly[:images].configure do |c|
-  c.convert_command  = "#{path}convert"
-  c.identify_command = "#{path}convert"
-end
 
 app = Dragonfly[:files]
 app.configure_with(:rails)
