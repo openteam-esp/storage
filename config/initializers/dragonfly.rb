@@ -24,6 +24,18 @@ end
 module Dragonfly
   module ImageMagick
     module Utils
+      def identify(temp_object)
+        # example of details string:
+        # myimage.png PNG 200x100 200x100+0+0 8-bit DirectClass 31.2kb
+        format, width, height, depth = raw_identify(temp_object, "-ping -format '%m %w %h %z'").split(' ')
+        {
+          :format => format.to_s.downcase.to_sym,
+          :width => width.to_i,
+          :height => height.to_i,
+          :depth => depth.to_i
+        }
+      end
+
       def raw_identify(temp_object, args='')
         throw :unable_to_handle if temp_object.original_filename.try(:downcase) =~ /.pdf/
 
