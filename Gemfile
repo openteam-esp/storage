@@ -9,7 +9,7 @@ end
 group :default do
   gem 'ancestry'
   gem 'bunny',                          :require => false
-  gem 'dragonfly'
+  gem 'dragonfly', '~> 0.9.14'
   gem 'esp-commons'
   gem 'jquery-rails'
   gem 'rails',                          :require => false
