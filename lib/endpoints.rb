@@ -24,7 +24,6 @@ class Endpoints
       else
         base_entry_name, *relative_path = params[:name].split('/')
         base_entry = FileEntry.where(:name => base_entry_name).find(params[:id])
-        app.response_headers['Last-Modified'] = base_entry.updated_at.to_s
 
         app.fetch base_entry.subfile(relative_path).file_uid
       end
