@@ -243,8 +243,9 @@ DEPENDENCIES
   annotate
   brakeman
   bunny
+  capistrano (~> 2.15.5)
   capistrano-db-tasks!
-  capistrano-unicorn (~> 0.1.7)
+  capistrano-unicorn (~> 0.1.10)
   dragonfly (~> 0.9.14)
   esp-commons
   fabrication
