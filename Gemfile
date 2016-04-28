@@ -8,6 +8,7 @@ end
 
 group :default do
   gem 'ancestry'
+  gem 'airbrake', '~> 4.3.4'
   gem 'bunny',                          :require => false
   gem 'dragonfly', '~> 0.9.14'
   gem 'esp-commons'
