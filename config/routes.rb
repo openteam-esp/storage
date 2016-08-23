@@ -4,6 +4,10 @@ Storage::Application.routes.draw do
   match 'api/el_finder/v2' => 'el_finder/commands#create'
   match 'api/el_finder/v2/*root_path' => 'el_finder/commands#create'
 
+  namespace :api do
+    get '/test/:node_name' => 'api#test'
+  end
+
   # get image's region without watermark
   get '/files/:id/region/:width/:height/:x/:y/(:resized_width-:resized_height)(:cropify)(:gravity)/*name' => Endpoints.region,
     :defaults => { :watermark => true },

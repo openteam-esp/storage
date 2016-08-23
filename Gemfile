@@ -7,14 +7,16 @@ group :assets do
 end
 
 group :default do
-  gem 'ancestry'
+  #gem 'libarchive-ruby', :require => false
   gem 'airbrake', '~> 4.3.4'
+  gem 'ancestry'
+  gem 'awesome_print'
   gem 'bunny', :require => false
   gem 'dragonfly', '~> 0.9.14'
   gem 'esp-commons'
+  gem 'jbuilder'
   gem 'jquery-rails'
   gem 'rails', :require => false
-  gem 'libarchive-ruby', :require => false
   gem 'russian'
 end
 
