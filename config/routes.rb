@@ -5,7 +5,8 @@ Storage::Application.routes.draw do
   match 'api/el_finder/v2/*root_path' => 'el_finder/commands#create'
 
   namespace :api do
-    get '/files_by_node/:node_name' => 'api#files_by_node'
+    get '/files_by_node/:directory_id' => 'api#files_by_node'
+    get '/find_entry_by_name' => 'api#find_entry_by_name'
   end
 
   # get image's region without watermark
