@@ -1,11 +1,14 @@
 app:
-  secret:       SECRET
-  url:          http://storage.openteam.ru
+  secret:   SECRET
+  url:      http://storage
 
 errors:
-  key:          KEY
-  url:          http://errors.openteam.ru
+  key:      KEY
+  url:      http://errbit
 
-# Uncomment to use watermark
-#watermark:
-  #file:         public/logotype.png
+slack:
+  channel:  channel
+  webhook:  http://webhook
+
+amqp:
+  url:      amqp://rmq

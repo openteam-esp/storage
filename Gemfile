@@ -7,8 +7,6 @@ group :assets do
 end
 
 group :default do
-  #gem 'libarchive-ruby', :require => false
-  gem 'airbrake', '~> 4.3.4'
   gem 'ancestry'
   gem 'awesome_print'
   gem 'bunny', require: false
@@ -16,6 +14,7 @@ group :default do
   gem 'esp-commons'
   gem 'jbuilder'
   gem 'jquery-rails'
+  gem 'openteam-commons', '~> 0.3.3'
   gem 'rails', '~> 3.2.20'
   gem 'russian'
 end
@@ -23,11 +22,9 @@ end
 group :development do
   gem 'annotate', require: false
   gem 'brakeman', require: false
-  #gem 'capistrano', '~> 2.15.5', :require => false
-  #gem 'capistrano-db-tasks', :git => 'git://github.com/sgruhier/capistrano-db-tasks', :ref => '396cbbf', :require => false
-  #gem 'capistrano-unicorn', '~> 0.1.10', :require => false
+  gem 'capistrano-db-tasks', '0.4', require: false
   gem 'hirb'
-  gem 'openteam-capistrano'
+  gem 'openteam-capistrano', '~> 1.0.16'
 end
 
 group :production do
